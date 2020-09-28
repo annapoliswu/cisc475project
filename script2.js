@@ -1,5 +1,7 @@
 alert("script loaded");
 
+var dictArray = [];
+var referenceArray = [];
 $("#submitButton").click(function () {
     alert("submit pressed");
     var fileInput = document.getElementById("csvData");
@@ -10,7 +12,6 @@ $("#submitButton").click(function () {
         reader.onload = function () {
             data = reader.result;
 
-            console.log(data);
             var allRows = data.split(/\r?\n|\r/);
             var table = '<table>';
             for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
@@ -19,6 +20,7 @@ $("#submitButton").click(function () {
                     table += '<tr>';
                 } else {
                     table += '<tr>';
+                    var dict = {};
                 }
                 var rowCells = allRows[singleRow].split(',');
                 for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
@@ -26,11 +28,14 @@ $("#submitButton").click(function () {
                         table += '<th>';
                         table += rowCells[rowCell];
                         table += '</th>';
+                        referenceArray.push(rowCells[rowCell]);
                     } else {
                         table += '<td>';
                         table += rowCells[rowCell];
                         table += '</td>';
+                        dict[referenceArray[rowCell]] = rowCells[rowCell];
                     }
+
                     document.getElementById('out').innerHTML = String(singleRow);
                 }
                 if (singleRow === 0) {
@@ -39,11 +44,15 @@ $("#submitButton").click(function () {
                     table += '<tbody>';
                 } else {
                     table += '</tr>';
+                    dictArray.push(dict);
                 }
             }
             table += '</tbody>';
             table += '</table>';
             $('body').append(table);
+
+            console.log(referenceArray);
+            console.log(dictArray[0]);
 
         };
         // start reading the file. When it is done, calls the onload event defined above.
