@@ -11,7 +11,8 @@ $("#submitButton").click(function () {
     */
 
     d3.csv(fileURL).then(function(data) {
-        $("#submitButton").text(JSON.stringify(data));  //in array, data[i] for each item
+        alert('data submitted, wait for display');
+        $("#out").text(JSON.stringify(data));  //in array, data[i] for each item
         
     }).catch( function(error){
         alert('error' + error);
