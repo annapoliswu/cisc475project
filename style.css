@@ -16,3 +16,8 @@ body{
 .bar:hover {
 	fill: red
 }
+
+.text {
+	fill:white;
+	font-family: arial;
+}
