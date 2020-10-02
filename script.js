@@ -20,6 +20,7 @@ $("#submitButton").click(function () {
 	    var svg = d3.select('svg')
 	    	.attr("width", "100%")
 	    	.attr("height", "100%")
+	    	.attr("class", "graph-component");
 
 	    var usages = [];
 	    for(var j = 0; j < data.length; j++){
@@ -30,10 +31,11 @@ $("#submitButton").click(function () {
 	    svg.selectAll("rect")
 	    	.data(usages)
 	    	.enter().append("rect")
-	    		.attr("height", function(d,i) {return (d * 10)})
+	    		.attr("class", "bar")
+	    		.attr("height", function(d,i) {return (d * 1000)})
 	    		.attr("width","40")
 	    		.attr("x", function(d,i) {return i * 60 + 25})
-	    		.attr("y", function(d,i) {return(400 - d * 10)});
+	    		.attr("y", function(d,i) {return(800 - (d * 1000))});
 
 
 
