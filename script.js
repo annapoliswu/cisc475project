@@ -19,7 +19,7 @@ $("#submitButton").click(function () {
 	    		.attr("class", "bar")
 	    		.attr("height", function(d,i) {return (d * 1000)})
 	    		.attr("width","40")
-	    		.attr("x", function(d,i) {return i * 60 + 25})
+	    		.attr("x", function(d,i) {return i * 60 + 45})
 	    		.attr("y", function(d,i) {return(800 - (d * 1000))});
 
 	    svg.selectAll("text")
@@ -27,8 +27,19 @@ $("#submitButton").click(function () {
 	    	.enter().append("text")
 	    	.text(function(d) {return d})
 	    		.attr("class", "text")
-	    		.attr("x", function(d,i) {return i * 60 + 30})
+	    		.attr("x", function(d,i) {return i * 60 + 50})
 	    		.attr("y", function(d,i) {return(815 - (d * 1000))});
+
+	    var yscale = d3.scaleLinear()
+	    	.domain([0, d3.max(usages)])
+	    	.range([800,0]);
+
+	    var yaxis = d3.axisLeft()
+	    	.scale(yscale);
+
+	    svg.append("g")
+	    	.attr("transform", "translate(50, 10)")
+	    	.call(yaxis);
 
     }).catch( function(error){
         alert('error' + error);
