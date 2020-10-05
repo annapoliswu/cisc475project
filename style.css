@@ -2,3 +2,22 @@ body{
     text-align: center;
     padding: 50px;
 }
+
+.graph-component {
+	background-color: gray;
+}
+
+.bar {
+	fill: green;
+	stroke: black;
+	stroke-width: 3;
+}
+
+.bar:hover {
+	fill: red
+}
+
+.text {
+	fill:white;
+	font-family: arial;
+}
