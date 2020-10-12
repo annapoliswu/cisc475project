@@ -1,47 +1,45 @@
 $("#submitButton").click(function () {
     let fileURL =  URL.createObjectURL($('#csvData').prop('files')[0]); //get file and then create temporary url for d3 to read
 
-    d3.csv(fileURL).then(function(data) {
+	var margin = { top: 10, right: 30, bottom: 30, left: 60 },
+		width = 1000 - margin.left - margin.right,
+		height = 400 - margin.top - margin.bottom;
 
-	    var svg = d3.select('svg')
-	    	.attr("width", "100%")
-	    	.attr("height", "100%")
-	    	.attr("class", "graph-component");
+	var svg = d3.select("#graph")
+		.append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform",
+			"translate(" + margin.left + "," + margin.top + ")");
 
-	    var usages = [];
-	    for(var j = 0; j < data.length; j++){
-		    usages[j] = data[j].USAGE;
-	    }
+	d3.csv(fileURL,
+		function(d) {
+			return { date: d3.timeParse("%m/%d/%Y-%H:%M")(d.DATE + "-" + d['END TIME']), value: d.USAGE }
+		},
 
-	    svg.selectAll("rect")
-	    	.data(usages)
-	    	.enter().append("rect")
-	    		.attr("class", "bar")
-	    		.attr("height", function(d,i) {return (d * 1000)})
-	    		.attr("width","40")
-	    		.attr("x", function(d,i) {return i * 60 + 45})
-	    		.attr("y", function(d,i) {return(800 - (d * 1000))});
+		function(data) {
+			var x = d3.scaleTime()
+				.domain(d3.extent(data, function (d) { return d.date; }))
+				.range([0, width]);
+			svg.append("g")
+				.attr("transform", "translate(0," + height + ")")
+				.call(d3.axisBottom(x));
 
-	    svg.selectAll("text")
-	    	.data(usages)
-	    	.enter().append("text")
-	    	.text(function(d) {return d})
-	    		.attr("class", "text")
-	    		.attr("x", function(d,i) {return i * 60 + 50})
-	    		.attr("y", function(d,i) {return(815 - (d * 1000))});
+			var y = d3.scaleLinear()
+				.domain([0, d3.max(data, function (d) { return +d.value; })])
+				.range([height, 0]);
+			svg.append("g")
+				.call(d3.axisLeft(y));
 
-	    var yscale = d3.scaleLinear()
-	    	.domain([0, d3.max(usages)])
-	    	.range([800,0]);
+			svg.selectAll(".bar")
+				.data(data)
+				.enter().append("rect")
+				.attr("class", "bar")
+				.attr("x", function(d) { return x(d.date); })
+				.attr("y", function(d) { return y(d.value); })
+				.attr("width", width/data.length)
+				.attr("height", function(d) { return height - y(d.value); });
 
-	    var yaxis = d3.axisLeft()
-	    	.scale(yscale);
-
-	    svg.append("g")
-	    	.attr("transform", "translate(50, 10)")
-	    	.call(yaxis);
-
-    }).catch( function(error){
-        alert('error' + error);
-    });
+		});
 });
