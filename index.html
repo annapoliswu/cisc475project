@@ -3,18 +3,26 @@
   <head>
     <link rel="stylesheet" href="./style.css"> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
     
   </head>
   
   <body>
     <h1> Testing... </h1>
     <input type="file" id = "csvData" accept=".csv">
-    <button id="submitButton" class="button">Submit</button>
-    <div></div>
+    <button id="UsageButton" class="button">Usage</button>
+	<p><label for="start">Start date:</label>
+
+	<input type="date" id="start" name="startDate">
+	<label for="start">End date:</label>
+
+	<input type="date" id="end" name="endDate">
+       </p>
+    <div id = "graph"></div>
     <svg></svg>
-    <div id="out"></div>
-    <script type="module" src="./script.js" async></script> 
+	<p id="demo"></p>
+    <script type="module" src="./scriptLineGraph.js" async></script> 
+	
   </body>
   
 </html>
