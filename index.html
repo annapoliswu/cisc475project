@@ -1,20 +1,69 @@
 <html>
-  
-  <head>
-    <link rel="stylesheet" href="./style.css"> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    
-  </head>
-  
-  <body>
-    <h1> Testing... </h1>
-    <input type="file" id = "csvData" accept=".csv">
+
+<head>
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script type="text/javascript" src="./script.js" async></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="background">
+  <nav class="navbar navbar-dark green">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">ElecVis</a>
+    </div>
+    <ul class="navbar-nav" >
+      <li class="nav-item">
+        <a class="nav-link" href="http://localhost:8080/About">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="http://localhost:8080/">Visualization</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div id="controlPanel">
+    <input type="file" id="csvData" accept=".csv">
     <button id="submitButton" class="button">Submit</button>
-    <div id = "graph"></div>
+  </div>
+    
+  <div id=mainPanel>
+    <div class="tips overflow-auto">
+      <img id="tipIcon1" src="cuteEarth.png" class='tipIcon'>
+
+      <div class="tip" id="avgDaily">
+        Average daily usage: XXX
+      </div>
+      <div class="tip" id="avgMonthly">
+        Average monthly usage: XXX
+      </div>
+      <div class="tip" id="tip1">
+        Tip 1
+      </div>
+      <div class="tip" id="tip2">
+        Tip 2
+      </div>
+      <div class="tip" id="tip3">
+        Tip 3
+      </div>
+    </div>
+    <button id="UsageButton" class="button">Usage</button>
+	<p><label for="start">Start date:</label>
+
+	<input type="date" id="start" name="startDate">
+	<label for="start">End date:</label>
+
+	<input type="date" id="end" name="endDate">
+       </p>
     <svg></svg>
-    <div id="out"></div>
-    <script type="module" src="./script.js" async></script> 
-  </body>
-  
+	<p id="demo"></p>
+    <div id="graph"></div>
+
+  </div>
+  </div>
+</div>
+</body>
+
 </html>
