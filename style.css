@@ -78,3 +78,14 @@
 	max-width: 30%;
     height: auto;
   }
+
+#navbarNav{
+	float: right;
+}
+
+#submitSection{
+	float:left;
+}
+#dateSection{
+	float: right;
+}

@@ -1,6 +1,6 @@
 
 var startDate;
-var stopDate;
+var endDate;
 
 //every time start date changes, update dateEntered value
 document.getElementById("start").addEventListener("change", function () {
@@ -12,13 +12,16 @@ document.getElementById("start").addEventListener("change", function () {
 
 document.getElementById("end").addEventListener("change", function () {
 	var inputEnd = this.value;
-	stopDate = new Date(inputEnd);
+	endDate = new Date(inputEnd);
 	console.log(inputEnd);
-	console.log(stopDate);
+	console.log(endDate);
 });
 
+//on submit, read data, set domain range, append graph
 $("#submitButton").click(function () {
-	let fileURL = URL.createObjectURL($('#csvData').prop('files')[0]); //get file and then create temporary url for d3 to read
+
+	//get file and then create temporary url for d3 to read
+	let fileURL = URL.createObjectURL($('#csvData').prop('files')[0]);
 
 	//specify height and width
 	var margin = { top: 10, right: 30, bottom: 30, left: 60 },
@@ -47,19 +50,19 @@ $("#submitButton").click(function () {
 
 		function (data) {
 
-			let minmax = d3.extent(data, function(d){return d.date; }); //extent(array) returns [min, max] 
+			let minmax = d3.extent(data, function (d) { return d.date; }); //extent(array) returns [min, max] 
 			console.log(minmax);
 
-			if(startDate == null || minmax[0] < startDate){
+			if (startDate == null || minmax[0] < startDate) {
 				startDate = minmax[0];
 			}
-			if(stopDate == null || minmax[1] > stopDate){
-				stopDate = minmax[1];
+			if (endDate == null || minmax[1] > endDate) {
+				endDate = minmax[1];
 			}
 
 			// x axis (date)
 			var x = d3.scaleTime()
-				.domain([startDate, stopDate])  	//domain takes in [min, max] and specifies the range the graph shows
+				.domain([startDate, endDate])  	//domain takes in [min, max] and specifies the range the graph shows
 				.range([0, width]);
 			svg.append("g")
 				.attr("transform", "translate(0," + height + ")")
