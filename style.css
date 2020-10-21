@@ -1,3 +1,14 @@
+
+
+/*************** GENERAL UI******************/
+body{
+	margin: 0;
+}
+
+#pageContent{
+	padding: 2% 10%;
+}
+
 #background{
 	width: 100%;
 	height: 100%;
@@ -7,9 +18,79 @@
 	font-size: 2vh;
 }
 
+.text {
+	fill:white;
+	font-family: arial;
+}
+
 .green {
 	background-color: green;
 }
+
+#submitSection{
+	float:left;
+}
+#dateSection{
+	float: right;
+}
+
+/*when screen below 900px, date input displays differently*/
+@media only screen and (max-width: 900px) {
+	#submitSection, #dateSection, #endDateInput, #startDateInput{
+		display: block;
+		float: none;
+	}
+
+	#controlPanel{
+		text-align:center;
+	}
+}
+
+
+#mainPanel {
+	margin: 0;
+	height: 60%;
+	width: 100%;
+}
+
+#tips {
+	background-color: white;
+	text-align: top;
+	height: 100%;
+	width: 20%;
+	border-color: gray;
+	border-width: .1vh;
+	border-style: solid;
+	padding: 2%;
+}
+
+.tip{
+	
+	background-color: rgba(0, 255, 0,.5);
+	font-size: 1.5vh;
+	text-align: left;
+	border-radius: 5%;
+	padding: 3%;
+	margin-top: 3%;
+}
+
+.tipIcon {
+	max-width: 30%;
+    height: auto;
+}
+
+#graph {
+	height: 100%;
+	width: 75%;
+	vertical-align: bottom;
+	background-color: white;
+	overflow: auto;
+	border-color: grey;
+  	border-width: .1vh;
+  	border-style: solid;
+}
+
+/**************** D3 GRAPHS ******************/
 
 .graph-component {
 	background-color: gray;
@@ -25,56 +106,4 @@
 	fill: red
 }
 
-.text {
-	fill:white;
-	font-family: arial;
-}
 
-#controlPanel {
-	padding: 2%;
-}
-
-#mainPanel {
-	display: inline-block;
-	padding: 2%;
-	height: 60%;
-	width: 100%;
-}
-#graph {
-	display: inline-block;
-	height: 100%;
-	width: 75%;
-	vertical-align: bottom;
-	background-color: white;
-	overflow: auto;
-	border-color: grey;
-  	border-width: .1vh;
-  	border-style: solid;
-}
-.tips {
-	display: inline-block;
-	background-color: white;
-	text-align: top;
-	height: 100%;
-	width: 20%;
-	padding: 1%;
-	margin: 1%;
-	border-color: gray;
-	border-width: .1vh;
- 	border-style: solid;
-}
-  
-  .tip{
-	
-	background-color: rgba(0, 255, 0,.5);
-	font-size: 1.5vh;
-	text-align: left;
-	border-radius: 5%;
-	padding: 3%;
-	margin-top: 3%;
-  }
-  
-  .tipIcon {
-	max-width: 30%;
-    height: auto;
-  }
