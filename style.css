@@ -1,4 +1,6 @@
 
+
+/*************** GENERAL UI******************/
 body{
 	margin: 0;
 }
@@ -16,43 +18,39 @@ body{
 	font-size: 2vh;
 }
 
-.green {
-	background-color: green;
-}
-
-.graph-component {
-	background-color: gray;
-}
-
-.bar {
-	fill: green;
-	stroke: black;
-	stroke-width: 3;
-}
-
-.bar:hover {
-	fill: red
-}
-
 .text {
 	fill:white;
 	font-family: arial;
 }
 
+.green {
+	background-color: green;
+}
+
+#submitSection{
+	float:left;
+}
+#dateSection{
+	float: right;
+}
+
+/*when screen below 900px, date input displays differently*/
+@media only screen and (max-width: 900px) {
+	#submitSection, #dateSection, #endDateInput, #startDateInput{
+		display: block;
+		float: none;
+	}
+
+	#controlPanel{
+		text-align:center;
+	}
+}
+
+
 #mainPanel {
 	margin: 0;
 	height: 60%;
 	width: 100%;
-}
-#graph {
-	height: 100%;
-	width: 75%;
-	vertical-align: bottom;
-	background-color: white;
-	overflow: auto;
-	border-color: grey;
-  	border-width: .1vh;
-  	border-style: solid;
 }
 
 #tips {
@@ -81,21 +79,31 @@ body{
     height: auto;
 }
 
-#submitSection{
-	float:left;
+#graph {
+	height: 100%;
+	width: 75%;
+	vertical-align: bottom;
+	background-color: white;
+	overflow: auto;
+	border-color: grey;
+  	border-width: .1vh;
+  	border-style: solid;
 }
-#dateSection{
-	float: right;
+
+/**************** D3 GRAPHS ******************/
+
+.graph-component {
+	background-color: gray;
+}
+
+.bar {
+	fill: green;
+	stroke: black;
+	stroke-width: 3;
+}
+
+.bar:hover {
+	fill: red
 }
 
 
-@media only screen and (max-width: 900px) {
-	#submitSection, #dateSection, #endDateInput, #startDateInput{
-		display: block;
-		float: none;
-	}
-
-	#controlPanel{
-		text-align:center;
-	}
-}
