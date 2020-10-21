@@ -3,16 +3,20 @@ var startDate;
 var endDate;
 
 //every time start date changes, update dateEntered value
-document.getElementById("start").addEventListener("change", function () {
+$('#start').on("change", function () {
 	var inputStart = this.value;
-	startDate = new Date(inputStart);
+	if(inputStart != null){
+		startDate = new Date(inputStart);
+	}
 	console.log(inputStart);
 	console.log(startDate);
 });
 
-document.getElementById("end").addEventListener("change", function () {
+$('#end').on("change", function () {
 	var inputEnd = this.value;
-	endDate = new Date(inputEnd);
+	if(inputEnd != null){
+		endDate = new Date(inputEnd);
+	}
 	console.log(inputEnd);
 	console.log(endDate);
 });
@@ -50,14 +54,18 @@ $("#submitButton").click(function () {
 
 		function (data) {
 
-			let minmax = d3.extent(data, function (d) { return d.date; }); //extent(array) returns [min, max] 
+			//check for date input so that date is valid
+			//extent(array) returns [min, max] 
+			let minmax = d3.extent(data, function (d) { return d.date; }); 
+			let min = minmax[0];
+			let max = minmax[1];
 			console.log(minmax);
 
-			if (startDate == null || minmax[0] < startDate) {
-				startDate = minmax[0];
+			if (startDate == null || startDate < min || startDate > max) {
+				startDate = min;
 			}
-			if (endDate == null || minmax[1] > endDate) {
-				endDate = minmax[1];
+			if (endDate == null || endDate < startDate || endDate < min || endDate > max) {
+				endDate = max;
 			}
 
 			// x axis (date)
@@ -75,6 +83,7 @@ $("#submitButton").click(function () {
 			svg.append("g")
 				.call(d3.axisLeft(y));
 
+				
 			// line and line styles
 			svg.append("path")
 				.datum(data)
@@ -82,6 +91,9 @@ $("#submitButton").click(function () {
 				.attr("stroke", "blue")     //line color
 				.attr("stroke-width", 1.5)
 				.attr("d", d3.line()
+					.defined(function(d) { 
+						return d.date < endDate && d.date > startDate; 
+					})
 					.x(function (d) { return x(d.date) })
 					.y(function (d) { return y(d.value) })
 				).attr("class", "graphline")    // so we can css select .graphline for further styling
