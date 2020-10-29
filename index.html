@@ -15,8 +15,12 @@
   <div id="background">
 
     <nav class="navbar navbar-expand-sm navbar-dark green justify-content-end">
-      <a class="navbar-brand" href="#">ElecVis</a>
+      <a class="navbar-brand" href="#">
+        <img src="images/logo.png" width="45" height="42" alt="">
+        ElecVis
+      </a>
       <div class="ml-auto mr-1"></div>
+
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -35,21 +39,14 @@
     <div id="pageContent">
 
       <div id="controlPanel">
-        <div class="dropdown" >
-          <button class="btn dropdown-toggle" id="pickGraphStyle" data-toggle="dropdown">
-            Line Graph
-          </button>
-          <ul class="dropdown-menu">
-            <li><a id="lineGraph" href="#">Line Graph</a></li>
-            <li><a id="barGraph" href="#">Bar Graph</a></li>
-          </ul>
-        </div>
+
         <div id="submitSection">
           <input type="file" id="csvData" accept=".csv">
           <button id="submitButton" class="button">Submit</button>
         </div>
 
-        <div id="dateSection">
+        <div id="optionsSection">
+
           <span id="startDateInput">
             <label for="start">Start date:</label>
             <input type="date" id="start" name="startDate">
@@ -57,6 +54,15 @@
           <span id="endDateInput">
             <label for="end">End date:</label>
             <input type="date" id="end" name="endDate">
+          </span>
+          <span class="dropdown" >
+            <button class="btn btn-success dropdown-toggle" id="pickGraphStyle" data-toggle="dropdown">
+              Line Graph
+            </button>
+            <ul class="dropdown-menu">
+              <li><a id="lineGraph" href="#">Line Graph</a></li>
+              <li><a id="barGraph" href="#">Bar Graph</a></li>
+            </ul>
           </span>
         </div>
       </div><!--end controlPanel-->
