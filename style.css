@@ -30,13 +30,28 @@ body{
 #submitSection{
 	float:left;
 }
-#dateSection{
+#optionsSection{
 	float: right;
+	margin-bottom: 10px;
+}
+
+.navbar{
+	margin-bottom: 20px;
+}
+
+#pickgraphStyle, .dropdown-menu li{
+	font-size: 2vh;
+	margin-left: 10px;
+}
+
+#pickgraphStyle{
+	padding: 5px 10px;
+	margin: 8px;
 }
 
 /*when screen below 900px, date input displays differently*/
 @media only screen and (max-width: 900px) {
-	#submitSection, #dateSection, #endDateInput, #startDateInput{
+	#submitSection, #optionsSection, #endDateInput, #startDateInput{
 		display: block;
 		float: none;
 	}
