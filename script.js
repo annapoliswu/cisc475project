@@ -1,30 +1,39 @@
-var startDate;
-var endDate;
+var inputStartDate;
+var inputEndDate;
 var firstClick = false;
 var svg = 0;
-var margin = {};
-var width = 0;
-var height = 0;
+
+//specify graph dimensions
+var margin = { top: 10, right: 30, bottom: 30, left: 60 };
+var viewWidth = $('#graph').width();
+var viewHeight = $('#graph').height()-60;
+var width = viewWidth - margin.left - margin.right; //was 600
+var height = viewHeight - margin.top - margin.bottom;
 var left = 0;
 var bottom = 0;
+
+/*
+//get size of things on every window resize
+$(window).resize(function() {
+	let width =  $('#graph').width();
+	let height =  $('#graph').height();
+	console.log('Height: ' + height + ' Width: ' + width);
+});
+*/
 
 //every time start date changes, update dateEntered value
 $('#start').on("change", function () {
 	var inputStart = this.value;
 	if (inputStart != null) {
-		startDate = new Date(inputStart);
+		inputStartDate = new Date(inputStart);
 	}
-	console.log(inputStart);
-	console.log(startDate);
 });
 
 $('#end').on("change", function () {
 	var inputEnd = this.value;
 	if (inputEnd != null) {
-		endDate = new Date(inputEnd);
+		inputEndDate = new Date(inputEnd);
 	}
-	console.log(inputEnd);
-	console.log(endDate);
 });
 
 $("#lineGraph").click(function (e) {
@@ -39,33 +48,19 @@ $("#submitButton").click(function () {
 	if ($('#csvData').prop('files').length > 0) {
 		let fileURL = URL.createObjectURL($('#csvData').prop('files')[0]); //get file and then create temporary url for d3 to read
 
-		//specify height and width
-		margin = { top: 10, right: 30, bottom: 30, left: 60 };
-		width = 1200 - margin.left - margin.right; //was 600
-		height = 400 - margin.top - margin.bottom;
-
 		if (!firstClick) {
-			svg = d3.select("#graph")
-				.append("svg")
-				.attr("width", width)
-				.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			createSVG();
 			firstClick = true;
-			console.log(svg.html());
+			//console.log(svg.html());
 		} else {
 			for (i = 0; i < 3; i++) {
 				elt = d3.select("#graph g")
-				console.log(d3.select("#graph").html());
+				//console.log(d3.select("#graph").html());
 			}
 			elt = d3.select("#graph svg")
 			elt.remove();
-			svg = d3.select("#graph")
-				.append("svg")
-				.attr("width", width)
-				.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			
+			createSVG();
 		}
 		if ($('#pickGraphStyle').text() == "Bar Graph") {
 			makeBarGraph(fileURL);
@@ -74,6 +69,19 @@ $("#submitButton").click(function () {
 		}
 	}
 });
+
+function createSVG(){
+	svg = d3.select("#graph")
+		.classed("svg-container", true) 
+		.append("svg")
+		.attr("preserveAspectRatio", "xMinYMin meet")
+		.attr("viewBox", `0 0 ${this.viewWidth} ${this.viewHeight}`)
+		.classed("svg-content-responsive", true)
+		.append("g")
+		.attr("width", width)
+		.attr("height", height + margin.top + margin.bottom)
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+}
 
 function makeLineGraph(fileURL) {
 	//d3.csv(URL, function to format data, function to use data)
@@ -94,14 +102,23 @@ function makeLineGraph(fileURL) {
 			let minmax = d3.extent(data, function (d) { return d.date; });
 			let min = minmax[0];
 			let max = minmax[1];
-			//console.log(minmax);
+			let startDate;
+			let endDate;
 
-			if (startDate == null || startDate < min || startDate > max) {
+			if (inputStartDate == null || inputStartDate < min || inputStartDate > max) {
 				startDate = min;
+			}else{
+				startDate = inputStartDate;
 			}
-			if (endDate == null || endDate < startDate || endDate < min || endDate > max) {
+
+			if (inputEndDate == null || inputEndDate < startDate || inputEndDate < min || inputEndDate > max) {
 				endDate = max;
+			}else{
+				endDate = inputEndDate;
 			}
+
+			
+			console.log(startDate + "\n" + endDate);
 
 			// x axis (date)
 			var x = d3.scaleTime()
