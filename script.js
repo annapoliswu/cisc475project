@@ -111,7 +111,7 @@ function makeLineGraph(fileURL) {
 				startDate = inputStartDate;
 			}
 
-			if (inputEndDate == null || inputEndDate < startDate || inputEndDate < min || inputEndDate > max) {
+			if (inputEndDate == null || inputEndDate < inputStartDate || inputEndDate < min || inputEndDate > max) {
 				endDate = max;
 			}else{
 				endDate = inputEndDate;
