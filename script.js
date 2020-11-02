@@ -111,7 +111,7 @@ $("#submitButton").click(function () {
 						localId = data[i]["rawDate"].slice(0, -3)
 						last2 = localId.slice(-2);
 						localId = localId.slice(0, -2);
-						firstLast = last2.slice(-1);
+						firstLast = last2.slice(0, 1);
 						if (firstLast == "-") {
 							localId = localId.concat("-0");
 						} else if (last2 == "10" || last2 == "11") {
@@ -128,6 +128,7 @@ $("#submitButton").click(function () {
 								newData[localIndex].value += parseFloat(data[i].value);
 							}
 					}
+					console.log(dash, fir, sec);
 					data = newData;
 				} else if ($('#pickInfoSize').text() == "One Day") {
 					newData = []
@@ -272,7 +273,6 @@ function makeLineGraph(data) {
 			.x(function (d) { return x(d.date) })
 			.y(function (d) { return y(d.value) })
 		).attr("class", "graphline")    // so we can css select .graphline for further styling
-	console.log(svg.html());
 
 }
 function makeBarGraph(data) {
