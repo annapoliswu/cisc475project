@@ -9,6 +9,8 @@ var viewWidth = $('#graph').width();
 var viewHeight = $('#graph').height() - 60;
 var width = viewWidth - margin.left - margin.right; //was 600
 var height = viewHeight - margin.top - margin.bottom;
+var innerRadius = 90;
+var outerRadius = Math.min(width, height) / 2;
 var left = 0;
 var bottom = 0;
 
@@ -42,7 +44,9 @@ $("#lineGraph").click(function (e) {
 $("#barGraph").click(function (e) {
 	$("#pickGraphStyle").text("Bar Graph");
 });
-
+$("#radialPlot").click(function (e) {
+	$("#pickGraphStyle").text("Radial Plot");
+});
 $("#fifteenMinutes").click(function (e) {
 	$("#pickInfoSize").text("Fifteen Minutes");
 });
@@ -197,6 +201,8 @@ $("#submitButton").click(function () {
 				}
 				if ($('#pickGraphStyle').text() == "Bar Graph") {
 					makeBarGraph(data);
+				} else if ($('#pickGraphStyle').text() == "Radial Plot") {
+					makeRadialPlot(data);
 				} else {
 					makeLineGraph(data);
 				}
@@ -267,7 +273,7 @@ function makeLineGraph(data) {
 		.attr("stroke-width", 1.5)
 		.attr("d", d3.line()
 			.defined(function (d) {
-				return d.date < endDate && d.date > startDate;
+				return d.date <= endDate && d.date >= startDate;
 			})
 			.x(function (d) { return x(d.date) })
 			.y(function (d) { return y(d.value) })
@@ -298,4 +304,38 @@ function makeBarGraph(data) {
 		.attr("width", width / data.length)
 		.attr("height", function (d) { return height - y(d.value); });
 
+}
+function makeRadialPlot(data){
+	var x = d3.scaleBand()
+        	.range([0, 2 * Math.PI])
+		.align(0)
+		.domain(data.map(function(d) { return d.date; }));
+        var y = d3.scaleRadial()
+		.range([innerRadius, outerRadius])
+		.domain([0, d3.max(data, function (d) { return +d.value; })]);
+        svg.append("g")
+                .selectAll("path")
+		.data(data)
+		.enter()
+		.append("path")
+			.attr("fill", "#69b3a2")
+			.attr("d", d3.arc()
+				.innerRadius(innerRadius)
+				.outerRadius(function(d) { return y(d.value); })
+				.startAngle(function(d) { return x(d.date); })
+				.endAngle(function(d) { return x(d.date) + x.bandwidth(); })
+				.padAngle(0.01)
+				.padRadius(innerRadius));
+	svg.append("g")
+		.selectAll("g")
+		.data(data)
+		.enter()
+		.append("g")
+			.attr("text-anchor", function(d) { return (x(d.date) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start"; })
+        		.attr("transform", function(d) { return "rotate(" + ((x(d.date) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")"+"translate(" + (y(d.value)+10) + ",0)"; })
+		.append("text")
+			.text(function(d) { return (d.date)})
+			.attr("transform", function(d) { return (x(d.date) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
+			.style("font-size", "10px")
+			.attr("alignment-baseline", "middle");
 }
