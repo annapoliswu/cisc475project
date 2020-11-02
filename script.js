@@ -267,7 +267,7 @@ function makeLineGraph(data) {
 		.attr("stroke-width", 1.5)
 		.attr("d", d3.line()
 			.defined(function (d) {
-				return d.date < endDate && d.date > startDate;
+				return d.date <= endDate && d.date >= startDate;
 			})
 			.x(function (d) { return x(d.date) })
 			.y(function (d) { return y(d.value) })
