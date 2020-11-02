@@ -160,7 +160,7 @@ $("#submitButton").click(function () {
 							} else {
 								localId = localId.concat(data[i]["rawDate"].slice(6, 10))
 							}
-						} else if (localId.slice(3, 4) == "/") {
+						} else if (data[i]["rawDate"].slice(3, 4) == "/") {
 							localId = localId.concat(data[i]["rawDate"].slice(4, 8));
 						} else {
 							localId = localId.concat(data[i]["rawDate"].slice(5, 9))
@@ -240,17 +240,14 @@ function makeLineGraph(data) {
 	}
 
 
-	console.log(startDate + "\n" + endDate);
 
 	// x axis (date)
 	var x = d3.scaleTime()
 		.domain([startDate, endDate])  	//domain takes in [min, max] and specifies the range the graph shows
 		.range([0, width]);
-	//console.log(svg.html());
 	svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x));
-	//console.log(svg.html());
 
 	// y axis
 	var y = d3.scaleLinear()
@@ -273,7 +270,6 @@ function makeLineGraph(data) {
 			.x(function (d) { return x(d.date) })
 			.y(function (d) { return y(d.value) })
 		).attr("class", "graphline")    // so we can css select .graphline for further styling
-
 }
 function makeBarGraph(data) {
 
