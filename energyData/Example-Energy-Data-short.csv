@@ -1,0 +1,10 @@
+TYPE,DATE,START TIME,END TIME,USAGE,UNITS,COST,NOTES
+Electric usage,9/21/2019,0:00,0:14,0.13,kWh,$0.04 ,
+Electric usage,9/21/2019,0:15,0:29,0.13,kWh,$0.04 ,
+Electric usage,9/21/2019,0:30,0:44,0.13,kWh,$0.04 ,
+Electric usage,9/21/2019,0:45,0:59,0.13,kWh,$0.04 ,
+Electric usage,9/21/2019,1:00,1:14,0.05,kWh,$0.01 ,
+Electric usage,9/21/2019,1:15,1:29,0.05,kWh,$0.01 ,
+Electric usage,9/21/2019,1:30,1:44,0.05,kWh,$0.01 ,
+Electric usage,9/21/2019,1:45,1:59,0.05,kWh,$0.01 ,
+Electric usage,9/21/2019,2:00,2:14,0.05,kWh,$0.01 ,
