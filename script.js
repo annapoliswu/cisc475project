@@ -128,7 +128,6 @@ $("#submitButton").click(function () {
 								newData[localIndex].value += parseFloat(data[i].value);
 							}
 					}
-					console.log(dash, fir, sec);
 					data = newData;
 				} else if ($('#pickInfoSize').text() == "One Day") {
 					newData = []
