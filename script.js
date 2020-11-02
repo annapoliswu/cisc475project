@@ -246,7 +246,7 @@ function makeLineGraph(data) {
 		.domain([startDate, endDate])  	//domain takes in [min, max] and specifies the range the graph shows
 		.range([0, width]);
 	//console.log(svg.html());
-	bottom = svg.append("g")
+	svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x));
 	//console.log(svg.html());
@@ -255,7 +255,7 @@ function makeLineGraph(data) {
 	var y = d3.scaleLinear()
 		.domain([0, d3.max(data, function (d) { return +d.value; })])
 		.range([height, 0]);
-	left = svg.append("g")
+	svg.append("g")
 		.call(d3.axisLeft(y));
 
 
@@ -267,17 +267,36 @@ function makeLineGraph(data) {
 		.attr("stroke-width", 1.5)
 		.attr("d", d3.line()
 			.defined(function (d) {
-				return d.date < endDate && d.date > startDate;
+				return d.date <= endDate && d.date >= startDate;
 			})
 			.x(function (d) { return x(d.date) })
 			.y(function (d) { return y(d.value) })
 		).attr("class", "graphline")    // so we can css select .graphline for further styling
-
+	console.log(svg.html());
 
 }
 function makeBarGraph(data) {
+
+	let minmax = d3.extent(data, function (d) { return d.date; });
+	let min = minmax[0];
+	let max = minmax[1];
+	let startDate;
+	let endDate;
+
+	if (inputStartDate == null || inputStartDate < min || inputStartDate > max) {
+		startDate = min;
+	} else {
+		startDate = inputStartDate;
+	}
+
+	if (inputEndDate == null || inputEndDate < inputStartDate || inputEndDate < min || inputEndDate > max) {
+		endDate = max;
+	} else {
+		endDate = inputEndDate;
+	}
+
 	var x = d3.scaleTime()
-		.domain(d3.extent(data, function (d) { return d.date; }))
+		.domain([startDate, endDate])
 		.range([0, width]);
 	svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
