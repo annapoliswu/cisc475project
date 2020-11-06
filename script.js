@@ -40,30 +40,39 @@ $('#end').on("change", function () {
 
 $("#lineGraph").click(function (e) {
 	$("#pickGraphStyle").text("Line Graph");
+	document.getElementById("submitButton").click();
 });
 $("#barGraph").click(function (e) {
 	$("#pickGraphStyle").text("Bar Graph");
+	document.getElementById("submitButton").click();
 });
 $("#radialPlot").click(function (e) {
 	$("#pickGraphStyle").text("Radial Plot");
+	document.getElementById("submitButton").click();
 });
 $("#fifteenMinutes").click(function (e) {
 	$("#pickInfoSize").text("Fifteen Minutes");
+	document.getElementById("submitButton").click();
 });
 $("#hour").click(function (e) {
 	$("#pickInfoSize").text("One Hour");
+	document.getElementById("submitButton").click();
 });
 $("#twelveHours").click(function (e) {
 	$("#pickInfoSize").text("Twelve Hours");
+	document.getElementById("submitButton").click();
 });
 $("#day").click(function (e) {
 	$("#pickInfoSize").text("One Day");
+	document.getElementById("submitButton").click();
 });
 $("#month").click(function (e) {
 	$("#pickInfoSize").text("One Month");
+	document.getElementById("submitButton").click();
 });
 $("#year").click(function (e) {
 	$("#pickInfoSize").text("One Year");
+	document.getElementById("submitButton").click();
 });
 
 //on submit, read data, set domain range, append graph
@@ -115,7 +124,7 @@ $("#submitButton").click(function () {
 						localId = data[i]["rawDate"].slice(0, -3)
 						last2 = localId.slice(-2);
 						localId = localId.slice(0, -2);
-						firstLast = last2.slice(-1);
+						firstLast = last2.slice(0, 1);
 						if (firstLast == "-") {
 							localId = localId.concat("-0");
 						} else if (last2 == "10" || last2 == "11") {
@@ -314,11 +323,12 @@ function makeRadialPlot(data){
 		.range([innerRadius, outerRadius])
 		.domain([0, d3.max(data, function (d) { return +d.value; })]);
         svg.append("g")
+		.attr("transform", "translate(" + width/2 + "," + height/2 + ")")
                 .selectAll("path")
 		.data(data)
 		.enter()
 		.append("path")
-			.attr("fill", "#69b3a2")
+			.attr("fill", "#000000")
 			.attr("d", d3.arc()
 				.innerRadius(innerRadius)
 				.outerRadius(function(d) { return y(d.value); })
@@ -326,7 +336,8 @@ function makeRadialPlot(data){
 				.endAngle(function(d) { return x(d.date) + x.bandwidth(); })
 				.padAngle(0.01)
 				.padRadius(innerRadius));
-	svg.append("g")
+	/*svg.append("g")
+		.attr("transform", "translate(" + width/2 + "," + height/2 + ")")
 		.selectAll("g")
 		.data(data)
 		.enter()
@@ -337,5 +348,5 @@ function makeRadialPlot(data){
 			.text(function(d) { return (d.date)})
 			.attr("transform", function(d) { return (x(d.date) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
 			.style("font-size", "10px")
-			.attr("alignment-baseline", "middle");
+			.attr("alignment-baseline", "middle");*/
 }
