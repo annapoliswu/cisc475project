@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Contact us page</title>
+  <title>Contact us page</title>
   <link rel="stylesheet" href="./style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://d3js.org/d3.v4.js"></script>
@@ -16,50 +17,53 @@
 
   <div id='navbar'></div>
 
- <div id="background">
+<div id="pageContent">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-3">
+      <div class="well well-sm">
+        <legend>For services request or help please fill in your information</legend>
+        <br>
+        <br>
+        <form class="form-horizontal" action="" method="post">
+          <!-- Name input-->
+          <div class="form-group">
 
-    <div id="pageContent">
-	<div class="row">
-      <div class="col-md-8 col-md-offset-3">
-        <div class="well well-sm">
-        	<legend class="text-center">For services request or help please fill in your information</legend>
-        	<br>
-        	<br>
-          <form class="form-horizontal" action="" method="post">
-    	<!-- Name input-->
-            <div class="form-group">
-             
-              <div class="col-md-9">
+            <div class="col-md-9">
               <input id="name" name="name" type="text" placeholder="Your name" class="form-control">
-              </div>
             </div>
-    	 <!-- Email input-->
-            <div class="form-group">
-              <div class="col-md-9">
-                <input id="email" name="email" type="text" placeholder="Your email" class="form-control">
-              </div>
+          </div>
+          <!-- Email input-->
+          <div class="form-group">
+            <div class="col-md-9">
+              <input id="email" name="email" type="text" placeholder="Your email" class="form-control">
             </div>
-         <!-- Phone number input-->
-         <div class="form-group">
-             <div class="col-md-9">
-                <input id="Phone" name="Phone" type="number" placeholder="Your phone number" class="form-control">
-              </div>
+          </div>
+          <!-- Phone number input-->
+          <div class="form-group">
+            <div class="col-md-9">
+              <input id="Phone" name="Phone" type="number" placeholder="Your phone number" class="form-control">
             </div>
-    
-         <!-- Message body -->
-            <div class="form-group">
-              <div class="col-md-9">
-                <textarea class="form-control" id="message" name="message" placeholder="Please enter your message here..." rows="5"></textarea>
-              </div>
+          </div>
+
+          <!-- Message body -->
+          <div class="form-group">
+            <div class="col-md-9">
+              <textarea class="form-control" id="message" name="message" placeholder="Please enter your message here..."
+                rows="5"></textarea>
             </div>
-             <!-- Form actions -->
-            <div class="form-group">
-              <div class="col-md-12 text-left">
-                <button type="submit" class="btn btn-success">Submit</button>
-              </div>
-    
-    	 	</div>
-    	 </div>
-    	</div>
+          </div>
+          <!-- Form actions -->
+          <div class="form-group">
+            <div class="col-md-12 text-left">
+              <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</div><!--end pageContent-->
+
 </body>
+
 </html>

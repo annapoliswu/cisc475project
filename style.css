@@ -3,20 +3,16 @@
 /*************** GENERAL UI******************/
 body{
 	margin: 0;
+	background-color: rgba(0,255,0,.1) !important;
+	overflow: scroll;
+	font-size: 2vh;
+	text-align: center;
 }
 
 #pageContent{
-	padding: 2% 10%;
+	padding: 4% 10%;
 }
 
-#background{
-	width: 100%;
-	height: 100%;
-	text-align: center;
-	background-color: rgba(0,255,0,.1);
-	overflow: scroll;
-	font-size: 2vh;
-}
 
 .text {
 	fill:white;
@@ -33,10 +29,6 @@ body{
 #optionsSection{
 	float: right;
 	margin-bottom: 10px;
-}
-
-.navbar{
-	margin-bottom: 20px;
 }
 
 #pickgraphStyle, .dropdown-menu li{

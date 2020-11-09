@@ -24,6 +24,7 @@ $(window).resize(function() {
 $( document ).ready(function() {
 	$('#navbar').load('/navbar.html');
 });
+
 //every time start date changes, update dateEntered value
 $('#start').on("change", function () {
 	var inputStart = this.value;
