@@ -89,37 +89,43 @@ $("#submitButton").click(function () {
 				return { rawDate: d.DATE + "-" + d['START TIME'], date: d3.timeParse("%m/%d/%Y-%H:%M")(d.DATE + "-" + d['END TIME']), value: d.USAGE, cost: d.COST }
 			},
 			function (data) {
+
+				let minmax = d3.extent(data, function (d) { return d.date; });
+				let min = minmax[0];
+				let max = minmax[1];
+				let startDate;
+				let endDate;
+
+				if (inputStartDate == null || inputStartDate < min || inputStartDate > max) {
+					startDate = min;
+				} else {
+					startDate = inputStartDate;
+				}
+
+				if (inputEndDate == null || inputEndDate < inputStartDate || inputEndDate < min || inputEndDate > max) {
+					endDate = max;
+				} else {
+					endDate = inputEndDate;
+				}
+
+
 				if ($('#pickInfoSize').text() == "Fifteen Minutes") {
+					newData = []
+					newDataIndices = []
+					for (i = 0; i < data.length; i++) {
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							newData.push(data[i])
+						} else {
+							console.log(data[i].date, endDate, startDate);
+						}
+					}
+					data = newData;
 				} else if ($('#pickInfoSize').text() == "One Hour") {
 					newData = []
 					newDataIndices = []
 					for (i = 0; i < data.length; i++) {
-						localId = data[i]["rawDate"].slice(0, -3)
-						if (!newDataIndices.includes(localId)) {
-							newDataIndices.push(localId);
-							newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
-						} else {
-							localIndex = newDataIndices.indexOf(localId);
-							newData[localIndex].value += parseFloat(data[i].value);
-						}
-					}
-					data = newData;
-				} else if ($('#pickInfoSize').text() == "Twelve Hours") {
-					newData = []
-					newDataIndices = []
-					for (i = 0; i < data.length; i++) {
-						localId = data[i]["rawDate"].slice(0, -3)
-						last2 = localId.slice(-2);
-						localId = localId.slice(0, -2);
-						firstLast = last2.slice(0, 1);
-						if (firstLast == "-") {
-							localId = localId.concat("-0");
-						} else if (last2 == "10" || last2 == "11") {
-							localId = localId.concat("0");
-						} else {
-							localId = localId.concat("12");
-						}
-						if (localId)
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							localId = data[i]["rawDate"].slice(0, -3)
 							if (!newDataIndices.includes(localId)) {
 								newDataIndices.push(localId);
 								newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
@@ -127,22 +133,52 @@ $("#submitButton").click(function () {
 								localIndex = newDataIndices.indexOf(localId);
 								newData[localIndex].value += parseFloat(data[i].value);
 							}
+						}
+					}
+					data = newData;
+				} else if ($('#pickInfoSize').text() == "Twelve Hours") {
+					newData = []
+					newDataIndices = []
+					for (i = 0; i < data.length; i++) {
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							localId = data[i]["rawDate"].slice(0, -3)
+							last2 = localId.slice(-2);
+							localId = localId.slice(0, -2);
+							firstLast = last2.slice(0, 1);
+							if (firstLast == "-") {
+								localId = localId.concat("-0");
+							} else if (last2 == "10" || last2 == "11") {
+								localId = localId.concat("0");
+							} else {
+								localId = localId.concat("12");
+							}
+							if (localId)
+								if (!newDataIndices.includes(localId)) {
+									newDataIndices.push(localId);
+									newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
+								} else {
+									localIndex = newDataIndices.indexOf(localId);
+									newData[localIndex].value += parseFloat(data[i].value);
+								}
+						}
 					}
 					data = newData;
 				} else if ($('#pickInfoSize').text() == "One Day") {
 					newData = []
 					newDataIndices = []
 					for (i = 0; i < data.length; i++) {
-						localId = data[i]["rawDate"].slice(0, -5)
-						if (localId.slice(-1) == "-") {
-							localId = localId.slice(0, -1);
-						}
-						if (!newDataIndices.includes(localId)) {
-							newDataIndices.push(localId);
-							newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y")(localId), value: parseFloat(data[i].value) })
-						} else {
-							localIndex = newDataIndices.indexOf(localId);
-							newData[localIndex].value += parseFloat(data[i].value);
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							localId = data[i]["rawDate"].slice(0, -5)
+							if (localId.slice(-1) == "-") {
+								localId = localId.slice(0, -1);
+							}
+							if (!newDataIndices.includes(localId)) {
+								newDataIndices.push(localId);
+								newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y")(localId), value: parseFloat(data[i].value) })
+							} else {
+								localIndex = newDataIndices.indexOf(localId);
+								newData[localIndex].value += parseFloat(data[i].value);
+							}
 						}
 					}
 					data = newData;
@@ -150,26 +186,28 @@ $("#submitButton").click(function () {
 					newData = []
 					newDataIndices = []
 					for (i = 0; i < data.length; i++) {
-						localId = data[i]["rawDate"].slice(0, 2);
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							localId = data[i]["rawDate"].slice(0, 2);
 
-						if (localId.slice(-1) != "/") {
-							localId = localId.concat("/");
-							if (data[i]["rawDate"].slice(4, 5) == "/") {
-								localId = localId.concat(data[i]["rawDate"].slice(5, 9))
+							if (localId.slice(-1) != "/") {
+								localId = localId.concat("/");
+								if (data[i]["rawDate"].slice(4, 5) == "/") {
+									localId = localId.concat(data[i]["rawDate"].slice(5, 9))
+								} else {
+									localId = localId.concat(data[i]["rawDate"].slice(6, 10))
+								}
+							} else if (data[i]["rawDate"].slice(3, 4) == "/") {
+								localId = localId.concat(data[i]["rawDate"].slice(4, 8));
 							} else {
-								localId = localId.concat(data[i]["rawDate"].slice(6, 10))
+								localId = localId.concat(data[i]["rawDate"].slice(5, 9))
 							}
-						} else if (data[i]["rawDate"].slice(3, 4) == "/") {
-							localId = localId.concat(data[i]["rawDate"].slice(4, 8));
-						} else {
-							localId = localId.concat(data[i]["rawDate"].slice(5, 9))
-						}
-						if (!newDataIndices.includes(localId)) {
-							newDataIndices.push(localId);
-							newData.push({ rawDate: localId, date: d3.timeParse("%m/%Y")(localId), value: parseFloat(data[i].value) })
-						} else {
-							localIndex = newDataIndices.indexOf(localId);
-							newData[localIndex].value += parseFloat(data[i].value);
+							if (!newDataIndices.includes(localId)) {
+								newDataIndices.push(localId);
+								newData.push({ rawDate: localId, date: d3.timeParse("%m/%Y")(localId), value: parseFloat(data[i].value) })
+							} else {
+								localIndex = newDataIndices.indexOf(localId);
+								newData[localIndex].value += parseFloat(data[i].value);
+							}
 						}
 					}
 					data = newData;
@@ -177,24 +215,28 @@ $("#submitButton").click(function () {
 					newData = []
 					newDataIndices = []
 					for (i = 0; i < data.length; i++) {
-						localId = data[i]["rawDate"];
-						if (localId.slice(3, 4) == "/") {
-							localId = localId.slice(4, 8);
-						} else if (localId.slice(4, 5) == "/") {
-							localId = localId.slice(5, 9);
-						} else {
-							localId = localId.slice(6, 10);
-						}
-						if (!newDataIndices.includes(localId)) {
-							newDataIndices.push(localId);
-							newData.push({ rawDate: localId, date: d3.timeParse("%Y")(localId), value: parseFloat(data[i].value) })
-						} else {
-							localIndex = newDataIndices.indexOf(localId);
-							newData[localIndex].value += parseFloat(data[i].value);
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							localId = data[i]["rawDate"];
+							if (localId.slice(3, 4) == "/") {
+								localId = localId.slice(4, 8);
+							} else if (localId.slice(4, 5) == "/") {
+								localId = localId.slice(5, 9);
+							} else {
+								localId = localId.slice(6, 10);
+							}
+							if (!newDataIndices.includes(localId)) {
+								newDataIndices.push(localId);
+								newData.push({ rawDate: localId, date: d3.timeParse("%Y")(localId), value: parseFloat(data[i].value) })
+							} else {
+								localIndex = newDataIndices.indexOf(localId);
+								newData[localIndex].value += parseFloat(data[i].value);
+							}
 						}
 					}
 					data = newData;
 				}
+				console.log(data[0].date, startDate);
+				console.log(data[0].date >= startDate);
 				if ($('#pickGraphStyle').text() == "Bar Graph") {
 					makeBarGraph(data);
 				} else {
@@ -220,29 +262,13 @@ function createSVG() {
 function makeLineGraph(data) {
 	//check for date input so that date is valid
 	//extent(array) returns [min, max] 
-	let minmax = d3.extent(data, function (d) { return d.date; });
-	let min = minmax[0];
-	let max = minmax[1];
-	let startDate;
-	let endDate;
 
-	if (inputStartDate == null || inputStartDate < min || inputStartDate > max) {
-		startDate = min;
-	} else {
-		startDate = inputStartDate;
-	}
-
-	if (inputEndDate == null || inputEndDate < inputStartDate || inputEndDate < min || inputEndDate > max) {
-		endDate = max;
-	} else {
-		endDate = inputEndDate;
-	}
 
 
 
 	// x axis (date)
 	var x = d3.scaleTime()
-		.domain([startDate, endDate])  	//domain takes in [min, max] and specifies the range the graph shows
+		.domain([data[0].date, data[data.length - 1].date])  	//domain takes in [min, max] and specifies the range the graph shows
 		.range([0, width]);
 	svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
@@ -263,35 +289,14 @@ function makeLineGraph(data) {
 		.attr("stroke", "blue")     //line color
 		.attr("stroke-width", 1.5)
 		.attr("d", d3.line()
-			.defined(function (d) {
-				return d.date <= endDate && d.date >= startDate;
-			})
 			.x(function (d) { return x(d.date) })
 			.y(function (d) { return y(d.value) })
 		).attr("class", "graphline")    // so we can css select .graphline for further styling
 }
 function makeBarGraph(data) {
 
-	let minmax = d3.extent(data, function (d) { return d.date; });
-	let min = minmax[0];
-	let max = minmax[1];
-	let startDate;
-	let endDate;
-
-	if (inputStartDate == null || inputStartDate < min || inputStartDate > max) {
-		startDate = min;
-	} else {
-		startDate = inputStartDate;
-	}
-
-	if (inputEndDate == null || inputEndDate < inputStartDate || inputEndDate < min || inputEndDate > max) {
-		endDate = max;
-	} else {
-		endDate = inputEndDate;
-	}
-
 	var x = d3.scaleTime()
-		.domain([startDate, endDate])
+		.domain([data[0].date, data[data.length - 1].date])
 		.range([0, width]);
 	svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
