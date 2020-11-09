@@ -86,7 +86,7 @@ $("#submitButton").click(function () {
 
 		d3.csv(fileURL,
 			function (d) {
-				return { rawDate: d.DATE + "-" + d['START TIME'], date: d3.timeParse("%m/%d/%Y-%H:%M")(d.DATE + "-" + d['END TIME']), value: d.USAGE, cost: d.COST }
+				return { rawDate: d.DATE + "-" + d['START TIME'], date: d3.utcParse("%m/%d/%Y-%H:%M")(d.DATE + "-" + d['END TIME']), value: d.USAGE, cost: d.COST }
 			},
 			function (data) {
 
@@ -128,7 +128,7 @@ $("#submitButton").click(function () {
 							localId = data[i]["rawDate"].slice(0, -3)
 							if (!newDataIndices.includes(localId)) {
 								newDataIndices.push(localId);
-								newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
+								newData.push({ rawDate: localId, date: d3.utcParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
 							} else {
 								localIndex = newDataIndices.indexOf(localId);
 								newData[localIndex].value += parseFloat(data[i].value);
@@ -155,7 +155,7 @@ $("#submitButton").click(function () {
 							if (localId)
 								if (!newDataIndices.includes(localId)) {
 									newDataIndices.push(localId);
-									newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
+									newData.push({ rawDate: localId, date: d3.utcParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
 								} else {
 									localIndex = newDataIndices.indexOf(localId);
 									newData[localIndex].value += parseFloat(data[i].value);
@@ -174,7 +174,7 @@ $("#submitButton").click(function () {
 							}
 							if (!newDataIndices.includes(localId)) {
 								newDataIndices.push(localId);
-								newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y")(localId), value: parseFloat(data[i].value) })
+								newData.push({ rawDate: localId, date: d3.utcParse("%m/%d/%Y")(localId), value: parseFloat(data[i].value) })
 							} else {
 								localIndex = newDataIndices.indexOf(localId);
 								newData[localIndex].value += parseFloat(data[i].value);
@@ -203,7 +203,7 @@ $("#submitButton").click(function () {
 							}
 							if (!newDataIndices.includes(localId)) {
 								newDataIndices.push(localId);
-								newData.push({ rawDate: localId, date: d3.timeParse("%m/%Y")(localId), value: parseFloat(data[i].value) })
+								newData.push({ rawDate: localId, date: d3.utcParse("%m/%Y")(localId), value: parseFloat(data[i].value) })
 							} else {
 								localIndex = newDataIndices.indexOf(localId);
 								newData[localIndex].value += parseFloat(data[i].value);
@@ -226,7 +226,7 @@ $("#submitButton").click(function () {
 							}
 							if (!newDataIndices.includes(localId)) {
 								newDataIndices.push(localId);
-								newData.push({ rawDate: localId, date: d3.timeParse("%Y")(localId), value: parseFloat(data[i].value) })
+								newData.push({ rawDate: localId, date: d3.utcParse("%Y")(localId), value: parseFloat(data[i].value) })
 							} else {
 								localIndex = newDataIndices.indexOf(localId);
 								newData[localIndex].value += parseFloat(data[i].value);
