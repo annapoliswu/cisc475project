@@ -108,7 +108,6 @@ $("#submitButton").click(function () {
 					endDate = inputEndDate;
 				}
 
-
 				if ($('#pickInfoSize').text() == "Fifteen Minutes") {
 					newData = []
 					newDataIndices = []
@@ -237,10 +236,11 @@ $("#submitButton").click(function () {
 				}
 				console.log(data[0].date, startDate);
 				console.log(data[0].date >= startDate);
+				let min = d3.min(data, function(d) {return +d.value});
 				if ($('#pickGraphStyle').text() == "Bar Graph") {
-					makeBarGraph(data);
+					makeBarGraph(data, min);
 				} else {
-					makeLineGraph(data);
+					makeLineGraph(data, min);
 				}
 			})
 	}
@@ -259,7 +259,7 @@ function createSVG() {
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 }
 
-function makeLineGraph(data) {
+function makeLineGraph(data, min) {
 	//check for date input so that date is valid
 	//extent(array) returns [min, max] 
 
@@ -293,7 +293,7 @@ function makeLineGraph(data) {
 			.y(function (d) { return y(d.value) })
 		).attr("class", "graphline")    // so we can css select .graphline for further styling
 }
-function makeBarGraph(data) {
+function makeBarGraph(data, min) {
 
 	var x = d3.scaleTime()
 		.domain([data[0].date, data[data.length - 1].date])
