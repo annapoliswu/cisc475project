@@ -261,6 +261,22 @@ function createSVG() {
 		.attr("width", width)
 		.attr("height", height + margin.top + margin.bottom)
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+				
+	svg.append("text")             
+	.attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
+	.style("text-anchor", "middle")
+	.text("Time")
+	.classed('graphText',true);
+
+	svg.append("text")
+		.attr("transform", "rotate(-90)")
+		.attr("y", 0 - margin.left)
+		.attr("x",0 - (height / 2))
+		.attr("dy", "1.5em")
+		.style("text-anchor", "middle")
+		.text("Energy Usage (kWh)")
+		.classed('graphText',true);
 }
 
 function makeLineGraph(data, min) {
@@ -297,6 +313,7 @@ function makeLineGraph(data, min) {
 			.y(function (d) { return y(d.value) })
 		).attr("class", "graphline")    // so we can css select .graphline for further styling
 }
+
 function makeBarGraph(data, min) {
 
 	var x = d3.scaleTime()
@@ -319,6 +336,6 @@ function makeBarGraph(data, min) {
 		.attr("x", function (d) { return x(d.date); })
 		.attr("y", function (d) { return y(d.value); })
 		.attr("width", width / data.length)
-		.attr("height", function (d) { return height - y(d.value); });
+		.attr("height", function (d) { return height - y(d.value); });  
 
 }
