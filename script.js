@@ -22,7 +22,7 @@ $(window).resize(function() {
 */
 
 $( document ).ready(function() {
-	$('#navbar').load('/navbar.html');
+	$('#navbar').load('./navbar.html');
 });
 
 //every time start date changes, update dateEntered value
