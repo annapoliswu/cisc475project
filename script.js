@@ -1,3 +1,4 @@
+
 var inputStartDate;
 var inputEndDate;
 var firstClick = true;
@@ -12,18 +13,9 @@ var height = viewHeight - margin.top - margin.bottom;
 var left = 0;
 var bottom = 0;
 
-/*
-//get size of things on every window resize
-$(window).resize(function() {
-	let width =  $('#graph').width();
-	let height =  $('#graph').height();
-	console.log('Height: ' + height + ' Width: ' + width);
-});
-*/
-
 $( document ).ready(function() {
-	$('#navbar').load('./navbar.html');
-});
+
+$('#navbar').load('./navbar.html');
 
 //every time start date changes, update dateEntered value
 $('#start').on("change", function () {
@@ -68,7 +60,13 @@ $("#year").click(function (e) {
 
 //on submit, read data, set domain range, append graph
 $("#submitButton").click(function () {
-	if ($('#csvData').prop('files').length > 0) {
+
+	if ($('#csvData').prop('files').length <= 0) {
+		alert('Please enter a file');
+	}else{
+		
+		$('#spinner').css('display','block');
+
 		let fileURL = URL.createObjectURL($('#csvData').prop('files')[0]); //get file and then create temporary url for d3 to read
 
 		if (firstClick) {
@@ -85,7 +83,6 @@ $("#submitButton").click(function () {
 
 			createSVG();
 		}
-
 
 
 		d3.csv(fileURL,
@@ -246,7 +243,27 @@ $("#submitButton").click(function () {
 				} else {
 					makeLineGraph(data, minData);
 				}
-			})
+			
+				//add labels 
+				svg.append("text")             
+					.attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
+					.style("text-anchor", "middle")
+					.text("Time")
+					.classed('graphText',true);
+
+				svg.append("text")
+					.attr("transform", "rotate(-90)")
+					.attr("y", 0 - margin.left)
+					.attr("x",0 - (height / 2))
+					.attr("dy", "1.5em")
+					.style("text-anchor", "middle")
+					.text("Energy Usage (kWh)")
+					.classed('graphText',true);
+				
+				//hide spinner
+				$('#spinner').css('display','none');
+
+			});
 	}
 });
 
@@ -262,29 +279,9 @@ function createSVG() {
 		.attr("height", height + margin.top + margin.bottom)
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-				
-	svg.append("text")             
-	.attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
-	.style("text-anchor", "middle")
-	.text("Time")
-	.classed('graphText',true);
-
-	svg.append("text")
-		.attr("transform", "rotate(-90)")
-		.attr("y", 0 - margin.left)
-		.attr("x",0 - (height / 2))
-		.attr("dy", "1.5em")
-		.style("text-anchor", "middle")
-		.text("Energy Usage (kWh)")
-		.classed('graphText',true);
 }
 
 function makeLineGraph(data, min) {
-	//check for date input so that date is valid
-	//extent(array) returns [min, max] 
-
-
-
 
 	// x axis (date)
 	var x = d3.scaleTime()
@@ -339,3 +336,5 @@ function makeBarGraph(data, min) {
 		.attr("height", function (d) { return height - y(d.value); });  
 
 }
+
+});

@@ -14,8 +14,6 @@
 <body>
   <div id='navbar'>
   </div>
-  
-  <div id="background">
 
     <div id="pageContent">
 
@@ -46,7 +44,7 @@
             </ul>
           </span>
           <span class="dropdown">
-            <button class="btn dropdown-toggle" id="pickInfoSize" data-toggle="dropdown">Fifteen Minutes</button>
+            <button class="btn btn-success dropdown-toggle" id="pickInfoSize" data-toggle="dropdown">Fifteen Minutes</button>
             <ul class="dropdown-menu">
               <li><a id="fifteenMinutes" href="#">Fifteen Minutes</a></li>
               <li><a id="hour" href="#">One Hour</a></li>
@@ -80,11 +78,19 @@
           </div>
         </div>
 
-        <div id="graph" class = "col-8"></div>
+        <div id="graph" class = "col-8">
+
+          <div id='spinner'>
+            <div class="spinner-border text-success" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+
+        </div>
+
       </div> <!--end mainPanel-->
 
-    </div>
-  </div>
+    </div> <!--end pageContent-->
 </body>
 
 </html>

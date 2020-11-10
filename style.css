@@ -13,12 +13,20 @@ body{
 	padding: 4% 10%;
 }
 
-
+#spinner{
+	position: relative;
+	margin-top: 25%;
+	text-align: center;
+	display: none;
+}
 .text {
 	fill:white;
 	font-family: arial;
 }
 
+.text-center{
+	text-align: center;
+}
 
 .green {
 	background-color: green;
