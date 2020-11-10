@@ -240,11 +240,11 @@ $("#submitButton").click(function () {
 				}
 				console.log(data[0].date, startDate);
 				console.log(data[0].date >= startDate);
-				let min = d3.min(data, function(d) {return +d.value});
+				let minData = d3.min(data, function(d) {return +d.value});
 				if ($('#pickGraphStyle').text() == "Bar Graph") {
-					makeBarGraph(data, min);
+					makeBarGraph(data, minData);
 				} else {
-					makeLineGraph(data, min);
+					makeLineGraph(data, minData);
 				}
 			})
 	}
