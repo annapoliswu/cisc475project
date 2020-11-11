@@ -1,20 +1,32 @@
 
 var inputStartDate;
 var inputEndDate;
-var firstClick = true;
-var svg = 0;
+var firstClick;
+var svg;
 
 //specify graph dimensions
-var margin = { top: 15, right: 30, bottom: 30, left: 90 };
-var viewWidth = $('#graph').width();
-var viewHeight = $('#graph').height()-30;
-var width = viewWidth - margin.left - margin.right; //was 600
-var height = viewHeight - margin.top - margin.bottom - 30;
-var left = 0;
-var bottom = 0;
+var margin;
+var viewWidth;
+var viewHeight;
+var width;
+var height;
+var left;
+var bottom;
 
 $( document ).ready(function() {
 
+	firstClick = true;
+	svg = 0;
+
+	margin = { top: 15, right: 30, bottom: 30, left: 90 };
+	viewWidth = $('#graph').width();
+	viewHeight = $('#graph').height()-30;
+	width = viewWidth - margin.left - margin.right; //was 600
+	height = viewHeight - margin.top - margin.bottom - 30;
+	left = 0;
+	bottom = 0;
+
+	
 $('#navbar').load('./navbar.html');
 
 //every time start date changes, update dateEntered value
