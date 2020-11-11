@@ -287,11 +287,15 @@ function makeLineGraph(data, min) {
 	var x = d3.scaleTime()
 		.domain([data[0].date, data[data.length - 1].date])  	//domain takes in [min, max] and specifies the range the graph shows
 		.range([0, width]);
-	var gX =svg.append("g")
+	var gX = svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b")));
-		
+		.call(d3.axisBottom(x));
 
+	gX.selectAll(".tick").each(function (d) {
+		if (this.textContent === d3.timeFormat("%B")(d)) {
+			d3.select(this).select("text").text(d3.timeFormat("%b")(d))
+		}
+	})
 	// y axis
 	var y = d3.scaleLinear()
 		.domain([0, d3.max(data, function (d) { return +d.value; })])
@@ -317,10 +321,15 @@ function makeBarGraph(data, min) {
 	var x = d3.scaleTime()
 		.domain([data[0].date, data[data.length - 1].date])
 		.range([0, width]);
-	svg.append("g")
+	var gX = svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b")));
+		.call(d3.axisBottom(x));
 
+	gX.selectAll(".tick").each(function (d) {
+		if (this.textContent === d3.timeFormat("%B")(d)) {
+			d3.select(this).select("text").text(d3.timeFormat("%b")(d))
+		}
+	})
 	var y = d3.scaleLinear()
 		.domain([0, d3.max(data, function (d) { return +d.value; })])
 		.range([height, 0]);
