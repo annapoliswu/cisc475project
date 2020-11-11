@@ -5,7 +5,7 @@ body{
 	margin: 0;
 	background-color: rgba(0,255,0,.1) !important;
 	overflow: scroll;
-	font-size: 2vh;
+	font-size: 1em;
 	text-align: center;
 }
 
@@ -13,10 +13,19 @@ body{
 	padding: 4% 10%;
 }
 
-
+#spinner{
+	position: relative;
+	margin-top: 25%;
+	text-align: center;
+	display: none;
+}
 .text {
 	fill:white;
 	font-family: arial;
+}
+
+.text-center{
+	text-align: center;
 }
 
 .green {
@@ -32,7 +41,7 @@ body{
 }
 
 #pickgraphStyle, .dropdown-menu li{
-	font-size: 2vh;
+	font-size: 1em;
 	margin-left: 10px;
 }
 
@@ -62,7 +71,7 @@ body{
 
 #tips {
 	background-color: white;
-	text-align: top;
+	text-align: center;
 	width: 20%;
 	border-color: gray;
 	border-width: .1vh;
@@ -73,7 +82,7 @@ body{
 .tip{
 	
 	background-color: rgba(0, 255, 0,.5);
-	font-size: 1.5vh;
+	font-size: .8em;
 	text-align: left;
 	border-radius: 5%;
 	padding: 3%;
@@ -115,6 +124,14 @@ body{
 	stroke: steelblue;
 	stroke-width: 5px;
   }
+
+  
+.graphText{
+	fill:black;
+	font-family: arial;
+	font-size: .8em;
+}
+
 
 /**************** D3 GRAPHS ******************/
 
