@@ -5,11 +5,11 @@ var firstClick = true;
 var svg = 0;
 
 //specify graph dimensions
-var margin = { top: 10, right: 30, bottom: 30, left: 60 };
+var margin = { top: 15, right: 30, bottom: 30, left: 90 };
 var viewWidth = $('#graph').width();
-var viewHeight = $('#graph').height() - 60;
+var viewHeight = $('#graph').height()-30;
 var width = viewWidth - margin.left - margin.right; //was 600
-var height = viewHeight - margin.top - margin.bottom;
+var height = viewHeight - margin.top - margin.bottom - 30;
 var left = 0;
 var bottom = 0;
 
@@ -253,7 +253,7 @@ $("#submitButton").click(function () {
 
 				svg.append("text")
 					.attr("transform", "rotate(-90)")
-					.attr("y", 0 - margin.left)
+					.attr("y", 0 - margin.left + 15)
 					.attr("x",0 - (height / 2))
 					.attr("dy", "1.5em")
 					.style("text-anchor", "middle")
@@ -287,9 +287,10 @@ function makeLineGraph(data, min) {
 	var x = d3.scaleTime()
 		.domain([data[0].date, data[data.length - 1].date])  	//domain takes in [min, max] and specifies the range the graph shows
 		.range([0, width]);
-	svg.append("g")
+	var gX =svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x));
+		.call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b")));
+		
 
 	// y axis
 	var y = d3.scaleLinear()
@@ -318,7 +319,7 @@ function makeBarGraph(data, min) {
 		.range([0, width]);
 	svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x));
+		.call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b")));
 
 	var y = d3.scaleLinear()
 		.domain([0, d3.max(data, function (d) { return +d.value; })])
