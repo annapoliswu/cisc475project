@@ -148,5 +148,16 @@ body{
 .bar:hover {
 	fill: red
 }
-
-
+p{
+	font-size: 25px;
+	color:darkgreen;
+	font-family: Gill Sans; 
+	margin-top:40px;
+	margin-left: 40px;
+	margin-right: 40px;
+}
+h1{
+	font-family: Gill Sans;
+	text-align: center;
+	margin-top: 40px;
+}
