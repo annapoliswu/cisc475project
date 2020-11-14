@@ -35,6 +35,7 @@ $('#start').on("change", function () {
 	if (inputStart != null) {
 		inputStartDate = new Date(inputStart);
 	}
+	updateGraph();
 });
 
 $('#end').on("change", function () {
@@ -42,6 +43,7 @@ $('#end').on("change", function () {
 	if (inputEnd != null) {
 		inputEndDate = new Date(inputEnd);
 	}
+	updateGraph();
 });
 
 $("#lineGraph").click(function (e) {
@@ -69,10 +71,18 @@ $("#month").click(function (e) {
 $("#year").click(function (e) {
 	$("#pickInfoSize").text("One Year");
 });
-
+//lines to make the page update upon menu selections
+document.getElementById("lineGraph").onclick = function() {updateGraph()};
+document.getElementById("barGraph").onclick = function() {updateGraph()};
+document.getElementById("fifteenMinutes").onclick = function() {updateGraph()};
+document.getElementById("hour").onclick = function() {updateGraph()};
+document.getElementById("twelveHours").onclick = function() {updateGraph()};
+document.getElementById("day").onclick = function() {updateGraph()};
+document.getElementById("month").onclick = function() {updateGraph()};
+document.getElementById("year").onclick = function() {updateGraph()};
 //on submit, read data, set domain range, append graph
-$("#submitButton").click(function () {
-
+$("#submitButton").click(function () {updateGraph () });
+function updateGraph () {
 	if ($('#csvData').prop('files').length <= 0) {
 		alert('Please enter a file');
 	}else{
@@ -128,7 +138,7 @@ $("#submitButton").click(function () {
 						if (data[i].date <= endDate && data[i].date >= startDate) {
 							newData.push(data[i])
 						} else {
-							console.log(data[i].date, endDate, startDate);
+							//console.log(data[i].date, endDate, startDate);
 						}
 					}
 					data = newData;
@@ -277,7 +287,7 @@ $("#submitButton").click(function () {
 
 			});
 	}
-});
+};
 
 function createSVG() {
 	svg = d3.select("#graph")
