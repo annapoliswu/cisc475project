@@ -1,27 +1,37 @@
+
 var inputStartDate;
 var inputEndDate;
-var firstClick = true;
-var svg = 0;
+var firstClick;
+var svg;
 
 //specify graph dimensions
-var margin = { top: 10, right: 30, bottom: 30, left: 60 };
-var viewWidth = $('#graph').width();
-var viewHeight = $('#graph').height() - 60;
-var width = viewWidth - margin.left - margin.right; //was 600
-var height = viewHeight - margin.top - margin.bottom;
-var innerRadius = 90;
-var outerRadius = Math.min(width, height) / 2;
-var left = 0;
-var bottom = 0;
+var margin;
+var viewWidth;
+var viewHeight;
+var width;
+var height;
+var innerRadius;
+var outerRadius;
+var left;
+var bottom;
 
-/*
-//get size of things on every window resize
-$(window).resize(function() {
-	let width =  $('#graph').width();
-	let height =  $('#graph').height();
-	console.log('Height: ' + height + ' Width: ' + width);
-});
-*/
+$( document ).ready(function() {
+
+	firstClick = true;
+	svg = 0;
+
+	margin = { top: 15, right: 30, bottom: 30, left: 90 };
+	viewWidth = $('#graph').width();
+	viewHeight = $('#graph').height()-30;
+	width = viewWidth - margin.left - margin.right; //was 600
+	height = viewHeight - margin.top - margin.bottom - 30;
+	innerRadius = 90;
+	outerRadius = Math.min(width, height) / 2;
+	left = 0;
+	bottom = 0;
+
+	
+$('#navbar').load('./navbar.html');
 
 //every time start date changes, update dateEntered value
 $('#start').on("change", function () {
@@ -29,6 +39,7 @@ $('#start').on("change", function () {
 	if (inputStart != null) {
 		inputStartDate = new Date(inputStart);
 	}
+	updateGraph();
 });
 
 $('#end').on("change", function () {
@@ -36,48 +47,54 @@ $('#end').on("change", function () {
 	if (inputEnd != null) {
 		inputEndDate = new Date(inputEnd);
 	}
+	updateGraph();
 });
 
 $("#lineGraph").click(function (e) {
 	$("#pickGraphStyle").text("Line Graph");
-	document.getElementById("submitButton").click();
 });
 $("#barGraph").click(function (e) {
 	$("#pickGraphStyle").text("Bar Graph");
-	document.getElementById("submitButton").click();
 });
 $("#radialPlot").click(function (e) {
 	$("#pickGraphStyle").text("Radial Plot");
-	document.getElementById("submitButton").click();
 });
 $("#fifteenMinutes").click(function (e) {
 	$("#pickInfoSize").text("Fifteen Minutes");
-	document.getElementById("submitButton").click();
 });
 $("#hour").click(function (e) {
 	$("#pickInfoSize").text("One Hour");
-	document.getElementById("submitButton").click();
 });
 $("#twelveHours").click(function (e) {
 	$("#pickInfoSize").text("Twelve Hours");
-	document.getElementById("submitButton").click();
 });
 $("#day").click(function (e) {
 	$("#pickInfoSize").text("One Day");
-	document.getElementById("submitButton").click();
 });
 $("#month").click(function (e) {
 	$("#pickInfoSize").text("One Month");
-	document.getElementById("submitButton").click();
 });
 $("#year").click(function (e) {
 	$("#pickInfoSize").text("One Year");
-	document.getElementById("submitButton").click();
 });
-
+//lines to make the page update upon menu selections
+document.getElementById("lineGraph").onclick = function() {updateGraph()};
+document.getElementById("barGraph").onclick = function() {updateGraph()};
+document.getElementById("fifteenMinutes").onclick = function() {updateGraph()};
+document.getElementById("hour").onclick = function() {updateGraph()};
+document.getElementById("twelveHours").onclick = function() {updateGraph()};
+document.getElementById("day").onclick = function() {updateGraph()};
+document.getElementById("month").onclick = function() {updateGraph()};
+document.getElementById("year").onclick = function() {updateGraph()};
 //on submit, read data, set domain range, append graph
-$("#submitButton").click(function () {
-	if ($('#csvData').prop('files').length > 0) {
+$("#submitButton").click(function () {updateGraph () });
+function updateGraph () {
+	if ($('#csvData').prop('files').length <= 0) {
+		alert('Please enter a file');
+	}else{
+		
+		$('#spinner').css('display','block');
+
 		let fileURL = URL.createObjectURL($('#csvData').prop('files')[0]); //get file and then create temporary url for d3 to read
 
 		if (firstClick) {
@@ -96,24 +113,54 @@ $("#submitButton").click(function () {
 		}
 
 
-
 		d3.csv(fileURL,
 			function (d) {
-				return { rawDate: d.DATE + "-" + d['START TIME'], date: d3.timeParse("%m/%d/%Y-%H:%M")(d.DATE + "-" + d['END TIME']), value: d.USAGE, cost: d.COST }
+				return { rawDate: d.DATE + "-" + d['START TIME'], date: d3.utcParse("%m/%d/%Y-%H:%M")(d.DATE + "-" + d['END TIME']), value: d.USAGE, cost: d.COST }
 			},
 			function (data) {
+
+				let minmax = d3.extent(data, function (d) { return d.date; });
+				let min = minmax[0];
+				let max = minmax[1];
+				let startDate;
+				let endDate;
+
+				if (inputStartDate == null || inputStartDate < min || inputStartDate > max) {
+					startDate = min;
+				} else {
+					startDate = inputStartDate;
+				}
+
+				if (inputEndDate == null || inputEndDate < inputStartDate || inputEndDate < min || inputEndDate > max) {
+					endDate = max;
+				} else {
+					endDate = inputEndDate;
+				}
+
 				if ($('#pickInfoSize').text() == "Fifteen Minutes") {
+					newData = []
+					newDataIndices = []
+					for (i = 0; i < data.length; i++) {
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							newData.push(data[i])
+						} else {
+							//console.log(data[i].date, endDate, startDate);
+						}
+					}
+					data = newData;
 				} else if ($('#pickInfoSize').text() == "One Hour") {
 					newData = []
 					newDataIndices = []
 					for (i = 0; i < data.length; i++) {
-						localId = data[i]["rawDate"].slice(0, -3)
-						if (!newDataIndices.includes(localId)) {
-							newDataIndices.push(localId);
-							newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
-						} else {
-							localIndex = newDataIndices.indexOf(localId);
-							newData[localIndex].value += parseFloat(data[i].value);
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							localId = data[i]["rawDate"].slice(0, -3)
+							if (!newDataIndices.includes(localId)) {
+								newDataIndices.push(localId);
+								newData.push({ rawDate: localId, date: d3.utcParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
+							} else {
+								localIndex = newDataIndices.indexOf(localId);
+								newData[localIndex].value += parseFloat(data[i].value);
+							}
 						}
 					}
 					data = newData;
@@ -121,41 +168,45 @@ $("#submitButton").click(function () {
 					newData = []
 					newDataIndices = []
 					for (i = 0; i < data.length; i++) {
-						localId = data[i]["rawDate"].slice(0, -3)
-						last2 = localId.slice(-2);
-						localId = localId.slice(0, -2);
-						firstLast = last2.slice(0, 1);
-						if (firstLast == "-") {
-							localId = localId.concat("-0");
-						} else if (last2 == "10" || last2 == "11") {
-							localId = localId.concat("0");
-						} else {
-							localId = localId.concat("12");
-						}
-						if (localId)
-							if (!newDataIndices.includes(localId)) {
-								newDataIndices.push(localId);
-								newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							localId = data[i]["rawDate"].slice(0, -3)
+							last2 = localId.slice(-2);
+							localId = localId.slice(0, -2);
+							firstLast = last2.slice(0, 1);
+							if (firstLast == "-") {
+								localId = localId.concat("-0");
+							} else if (last2 == "10" || last2 == "11") {
+								localId = localId.concat("0");
 							} else {
-								localIndex = newDataIndices.indexOf(localId);
-								newData[localIndex].value += parseFloat(data[i].value);
+								localId = localId.concat("12");
 							}
+							if (localId)
+								if (!newDataIndices.includes(localId)) {
+									newDataIndices.push(localId);
+									newData.push({ rawDate: localId, date: d3.utcParse("%m/%d/%Y-%H")(localId), value: parseFloat(data[i].value) })
+								} else {
+									localIndex = newDataIndices.indexOf(localId);
+									newData[localIndex].value += parseFloat(data[i].value);
+								}
+						}
 					}
 					data = newData;
 				} else if ($('#pickInfoSize').text() == "One Day") {
 					newData = []
 					newDataIndices = []
 					for (i = 0; i < data.length; i++) {
-						localId = data[i]["rawDate"].slice(0, -5)
-						if (localId.slice(-1) == "-") {
-							localId = localId.slice(0, -1);
-						}
-						if (!newDataIndices.includes(localId)) {
-							newDataIndices.push(localId);
-							newData.push({ rawDate: localId, date: d3.timeParse("%m/%d/%Y")(localId), value: parseFloat(data[i].value) })
-						} else {
-							localIndex = newDataIndices.indexOf(localId);
-							newData[localIndex].value += parseFloat(data[i].value);
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							localId = data[i]["rawDate"].slice(0, -5)
+							if (localId.slice(-1) == "-") {
+								localId = localId.slice(0, -1);
+							}
+							if (!newDataIndices.includes(localId)) {
+								newDataIndices.push(localId);
+								newData.push({ rawDate: localId, date: d3.utcParse("%m/%d/%Y")(localId), value: parseFloat(data[i].value) })
+							} else {
+								localIndex = newDataIndices.indexOf(localId);
+								newData[localIndex].value += parseFloat(data[i].value);
+							}
 						}
 					}
 					data = newData;
@@ -163,26 +214,28 @@ $("#submitButton").click(function () {
 					newData = []
 					newDataIndices = []
 					for (i = 0; i < data.length; i++) {
-						localId = data[i]["rawDate"].slice(0, 2);
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							localId = data[i]["rawDate"].slice(0, 2);
 
-						if (localId.slice(-1) != "/") {
-							localId = localId.concat("/");
-							if (data[i]["rawDate"].slice(4, 5) == "/") {
-								localId = localId.concat(data[i]["rawDate"].slice(5, 9))
+							if (localId.slice(-1) != "/") {
+								localId = localId.concat("/");
+								if (data[i]["rawDate"].slice(4, 5) == "/") {
+									localId = localId.concat(data[i]["rawDate"].slice(5, 9))
+								} else {
+									localId = localId.concat(data[i]["rawDate"].slice(6, 10))
+								}
+							} else if (data[i]["rawDate"].slice(3, 4) == "/") {
+								localId = localId.concat(data[i]["rawDate"].slice(4, 8));
 							} else {
-								localId = localId.concat(data[i]["rawDate"].slice(6, 10))
+								localId = localId.concat(data[i]["rawDate"].slice(5, 9))
 							}
-						} else if (localId.slice(3, 4) == "/") {
-							localId = localId.concat(data[i]["rawDate"].slice(4, 8));
-						} else {
-							localId = localId.concat(data[i]["rawDate"].slice(5, 9))
-						}
-						if (!newDataIndices.includes(localId)) {
-							newDataIndices.push(localId);
-							newData.push({ rawDate: localId, date: d3.timeParse("%m/%Y")(localId), value: parseFloat(data[i].value) })
-						} else {
-							localIndex = newDataIndices.indexOf(localId);
-							newData[localIndex].value += parseFloat(data[i].value);
+							if (!newDataIndices.includes(localId)) {
+								newDataIndices.push(localId);
+								newData.push({ rawDate: localId, date: d3.utcParse("%m/%Y")(localId), value: parseFloat(data[i].value) })
+							} else {
+								localIndex = newDataIndices.indexOf(localId);
+								newData[localIndex].value += parseFloat(data[i].value);
+							}
 						}
 					}
 					data = newData;
@@ -190,34 +243,59 @@ $("#submitButton").click(function () {
 					newData = []
 					newDataIndices = []
 					for (i = 0; i < data.length; i++) {
-						localId = data[i]["rawDate"];
-						if (localId.slice(3, 4) == "/") {
-							localId = localId.slice(4, 8);
-						} else if (localId.slice(4, 5) == "/") {
-							localId = localId.slice(5, 9);
-						} else {
-							localId = localId.slice(6, 10);
-						}
-						if (!newDataIndices.includes(localId)) {
-							newDataIndices.push(localId);
-							newData.push({ rawDate: localId, date: d3.timeParse("%Y")(localId), value: parseFloat(data[i].value) })
-						} else {
-							localIndex = newDataIndices.indexOf(localId);
-							newData[localIndex].value += parseFloat(data[i].value);
+						if (data[i].date <= endDate && data[i].date >= startDate) {
+							localId = data[i]["rawDate"];
+							if (localId.slice(3, 4) == "/") {
+								localId = localId.slice(4, 8);
+							} else if (localId.slice(4, 5) == "/") {
+								localId = localId.slice(5, 9);
+							} else {
+								localId = localId.slice(6, 10);
+							}
+							if (!newDataIndices.includes(localId)) {
+								newDataIndices.push(localId);
+								newData.push({ rawDate: localId, date: d3.utcParse("%Y")(localId), value: parseFloat(data[i].value) })
+							} else {
+								localIndex = newDataIndices.indexOf(localId);
+								newData[localIndex].value += parseFloat(data[i].value);
+							}
 						}
 					}
 					data = newData;
 				}
+				console.log(data[0].date, startDate);
+				console.log(data[0].date >= startDate);
+				let minData = d3.min(data, function(d) {return +d.value});
 				if ($('#pickGraphStyle').text() == "Bar Graph") {
-					makeBarGraph(data);
+					makeBarGraph(data, minData);
 				} else if ($('#pickGraphStyle').text() == "Radial Plot") {
-					makeRadialPlot(data);
+					makeRadialPlot(data, minData)
 				} else {
-					makeLineGraph(data);
+					makeLineGraph(data, minData);
 				}
-			})
+			
+				//add labels 
+				svg.append("text")             
+					.attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 20) + ")")
+					.style("text-anchor", "middle")
+					.text("Time")
+					.classed('graphText',true);
+
+				svg.append("text")
+					.attr("transform", "rotate(-90)")
+					.attr("y", 0 - margin.left + 15)
+					.attr("x",0 - (height / 2))
+					.attr("dy", "1.5em")
+					.style("text-anchor", "middle")
+					.text("Energy Usage (kWh)")
+					.classed('graphText',true);
+				
+				//hide spinner
+				$('#spinner').css('display','none');
+
+			});
 	}
-});
+};
 
 function createSVG() {
 	svg = d3.select("#graph")
@@ -230,47 +308,29 @@ function createSVG() {
 		.attr("width", width)
 		.attr("height", height + margin.top + margin.bottom)
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 }
 
-function makeLineGraph(data) {
-	//check for date input so that date is valid
-	//extent(array) returns [min, max] 
-	let minmax = d3.extent(data, function (d) { return d.date; });
-	let min = minmax[0];
-	let max = minmax[1];
-	let startDate;
-	let endDate;
-
-	if (inputStartDate == null || inputStartDate < min || inputStartDate > max) {
-		startDate = min;
-	} else {
-		startDate = inputStartDate;
-	}
-
-	if (inputEndDate == null || inputEndDate < inputStartDate || inputEndDate < min || inputEndDate > max) {
-		endDate = max;
-	} else {
-		endDate = inputEndDate;
-	}
-
-
-	console.log(startDate + "\n" + endDate);
+function makeLineGraph(data, min) {
 
 	// x axis (date)
 	var x = d3.scaleTime()
-		.domain([startDate, endDate])  	//domain takes in [min, max] and specifies the range the graph shows
+		.domain([data[0].date, data[data.length - 1].date])  	//domain takes in [min, max] and specifies the range the graph shows
 		.range([0, width]);
-	//console.log(svg.html());
-	bottom = svg.append("g")
+	var gX = svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x));
-	//console.log(svg.html());
 
+	gX.selectAll(".tick").each(function (d) {
+		if (this.textContent === d3.timeFormat("%B")(d)) {
+			d3.select(this).select("text").text(d3.timeFormat("%b")(d))
+		}
+	})
 	// y axis
 	var y = d3.scaleLinear()
 		.domain([0, d3.max(data, function (d) { return +d.value; })])
 		.range([height, 0]);
-	left = svg.append("g")
+	svg.append("g")
 		.call(d3.axisLeft(y));
 
 
@@ -281,23 +341,25 @@ function makeLineGraph(data) {
 		.attr("stroke", "blue")     //line color
 		.attr("stroke-width", 1.5)
 		.attr("d", d3.line()
-			.defined(function (d) {
-				return d.date <= endDate && d.date >= startDate;
-			})
 			.x(function (d) { return x(d.date) })
 			.y(function (d) { return y(d.value) })
 		).attr("class", "graphline")    // so we can css select .graphline for further styling
-
-
 }
-function makeBarGraph(data) {
+
+function makeBarGraph(data, min) {
+
 	var x = d3.scaleTime()
-		.domain(d3.extent(data, function (d) { return d.date; }))
+		.domain([data[0].date, data[data.length - 1].date])
 		.range([0, width]);
-	svg.append("g")
+	var gX = svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x));
 
+	gX.selectAll(".tick").each(function (d) {
+		if (this.textContent === d3.timeFormat("%B")(d)) {
+			d3.select(this).select("text").text(d3.timeFormat("%b")(d))
+		}
+	})
 	var y = d3.scaleLinear()
 		.domain([0, d3.max(data, function (d) { return +d.value; })])
 		.range([height, 0]);
@@ -311,10 +373,11 @@ function makeBarGraph(data) {
 		.attr("x", function (d) { return x(d.date); })
 		.attr("y", function (d) { return y(d.value); })
 		.attr("width", width / data.length)
-		.attr("height", function (d) { return height - y(d.value); });
+		.attr("height", function (d) { return height - y(d.value); });  
 
 }
-function makeRadialPlot(data){
+
+function makeRadialPlot(data, min){
 	var x = d3.scaleBand()
         	.range([0, 2 * Math.PI])
 		.align(0)
@@ -350,3 +413,6 @@ function makeRadialPlot(data){
 			.style("font-size", "10px")
 			.attr("alignment-baseline", "middle");*/
 }
+
+});
+
