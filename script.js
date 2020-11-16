@@ -52,40 +52,41 @@ $('#end').on("change", function () {
 
 $("#lineGraph").click(function (e) {
 	$("#pickGraphStyle").text("Line Graph");
+	updateGraph();
 });
 $("#barGraph").click(function (e) {
 	$("#pickGraphStyle").text("Bar Graph");
+	updateGraph();
 });
 $("#radialPlot").click(function (e) {
 	$("#pickGraphStyle").text("Radial Plot");
+	updateGraph();
 });
 $("#fifteenMinutes").click(function (e) {
 	$("#pickInfoSize").text("Fifteen Minutes");
+	updateGraph();
 });
 $("#hour").click(function (e) {
 	$("#pickInfoSize").text("One Hour");
+	updateGraph();
 });
 $("#twelveHours").click(function (e) {
 	$("#pickInfoSize").text("Twelve Hours");
+	updateGraph();
 });
 $("#day").click(function (e) {
 	$("#pickInfoSize").text("One Day");
+	updateGraph();
 });
 $("#month").click(function (e) {
 	$("#pickInfoSize").text("One Month");
+	updateGraph();
 });
 $("#year").click(function (e) {
 	$("#pickInfoSize").text("One Year");
+	updateGraph();
 });
-//lines to make the page update upon menu selections
-document.getElementById("lineGraph").onclick = function() {updateGraph()};
-document.getElementById("barGraph").onclick = function() {updateGraph()};
-document.getElementById("fifteenMinutes").onclick = function() {updateGraph()};
-document.getElementById("hour").onclick = function() {updateGraph()};
-document.getElementById("twelveHours").onclick = function() {updateGraph()};
-document.getElementById("day").onclick = function() {updateGraph()};
-document.getElementById("month").onclick = function() {updateGraph()};
-document.getElementById("year").onclick = function() {updateGraph()};
+
 //on submit, read data, set domain range, append graph
 $("#submitButton").click(function () {updateGraph () });
 function updateGraph () {
