@@ -469,30 +469,38 @@ $(document).ready(function () {
 	}
 
 	function makeRadialPlot(data, min) {
-		// Scale the x and y parts of the plot.
-		var x = d3.scaleBand()
-			.range([0, 2 * Math.PI])
-			.align(0)
-			.domain(data.map(function (d) { return d.date; }));
-		var y = d3.scaleRadial()
-			.range([innerRadius, outerRadius])
-			.domain([0, d3.max(data, function (d) { return +d.value; })]);
+		// If there's too much data, radial plot lines become too small to display
+		if (data.length > 400) {
+			svg.append("text")
+				.style("text-anchor", "right")
+                                .text("Too much data for radial plot.")
+		}
+		else {
+			// Scale the x and y parts of the plot.
+			var x = d3.scaleBand()
+				.range([0, 2 * Math.PI])
+				.align(0)
+				.domain(data.map(function (d) { return d.date; }));
+			var y = d3.scaleRadial()
+				.range([innerRadius, outerRadius])
+				.domain([0, d3.max(data, function (d) { return +d.value; })]);
 
-		// Add the data in a radial plot form.
-		svg.append("g")
-			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-			.selectAll("path")
-			.data(data)
-			.enter()
-			.append("path")
-			.attr("fill", "#000000")
-			.attr("d", d3.arc()
-				.innerRadius(innerRadius)
-				.outerRadius(function (d) { return y(d.value); })
-				.startAngle(function (d) { return x(d.date); })
-				.endAngle(function (d) { return x(d.date) + x.bandwidth(); })
-				.padAngle(0.01)
-				.padRadius(innerRadius));
+			// Add the data in a radial plot form.
+			svg.append("g")
+				.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+				.selectAll("path")
+				.data(data)
+				.enter()
+				.append("path")
+				.attr("fill", "#000000")
+				.attr("d", d3.arc()
+					.innerRadius(innerRadius)
+					.outerRadius(function (d) { return y(d.value); })
+					.startAngle(function (d) { return x(d.date); })
+					.endAngle(function (d) { return x(d.date) + x.bandwidth(); })
+					.padAngle(0.01)
+					.padRadius(innerRadius));
+		}
 	}
 
 });
