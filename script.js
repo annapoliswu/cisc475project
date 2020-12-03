@@ -108,8 +108,8 @@ $(document).ready(function () {
 		updateGraph();
 	});
 
-	//On submit button, update the graph.
-	$("#submitButton").click(function () { updateGraph() });
+	//On file input change, update the graph
+	$("#csvData").on( 'change' , function () { updateGraph(); });
 
 	//Take the data from the CSV file, pare it down to the date range and data size, and create the right kind of graph.
 	function updateGraph() {
