@@ -126,11 +126,21 @@ body{
   }
 
   
-.graphText{
-	fill:black;
+.graphText, .baselineText{
 	font-family: arial;
 	font-size: .8em;
 }
+
+.graphText{
+	fill:black;
+}
+
+.baselineText, .baseline{
+	fill: darkgreen;
+	font-weight: 600;
+}
+
+
 
 
 /**************** D3 GRAPHS ******************/
