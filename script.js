@@ -346,8 +346,10 @@ $(document).ready(function () {
 					console.log(data[0].date, startDate);
 					console.log(data[0].date >= startDate);
 					*/
+
 					//Find the baseline of the data for use in the graph.
 					let minData = d3.min(data, function (d) { return +d.value });
+
 					//Generate a bar graph.
 					if ($('#pickGraphStyle').text() == "Bar Graph") {
 						makeBarGraph(data, minData);
@@ -431,7 +433,18 @@ $(document).ready(function () {
 			.attr("d", d3.line()
 				.x(function (d) { return x(d.date) })
 				.y(function (d) { return y(d.value) })
-			).attr("class", "graphline")    // so we can css select .graphline for further styling
+			).attr("class", "graphline"); 
+
+		// Add baseline line
+		svg.append("line")
+			.attr("x1", 0)
+			.attr("x2", width)
+			.attr("y1", y(min))		//note the x() and y() functions scale the data to the graph
+			.attr("y2", y(min))
+			.attr("stroke-width", 1.5)
+			.attr("stroke", "red")
+			.attr("class", "baseline");
+	
 	}
 
 	function makeBarGraph(data, min) {
