@@ -438,12 +438,20 @@ $(document).ready(function () {
 		// Add baseline line
 		svg.append("line")
 			.attr("x1", 0)
-			.attr("x2", width)
+			.attr("x2", x(data[data.length - 1].date) )
 			.attr("y1", y(min))		//note the x() and y() functions scale the data to the graph
 			.attr("y2", y(min))
 			.attr("stroke-width", 1.5)
-			.attr("stroke", "red")
+			.attr("stroke-dasharray",4)
+			.attr("stroke", "darkgreen")
 			.attr("class", "baseline");
+
+		svg.append("text")
+			.attr("y", y(min)-5)//magic number here
+			.attr("x", 5)
+			.attr('text-anchor', 'left')
+			.attr("class", "baselineText")//easy to style with CSS
+			.text("Baseline Energy Usage");
 	
 	}
 
