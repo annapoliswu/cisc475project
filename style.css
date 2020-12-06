@@ -126,7 +126,7 @@ body{
   }
 
   
-.graphText, .baselineText{
+.graphText, .baseloadText{
 	font-family: arial;
 	font-size: .8em;
 }
@@ -135,7 +135,7 @@ body{
 	fill:black;
 }
 
-.baselineText, .baseline{
+.baseloadText, .baseload{
 	fill: darkgreen;
 	font-weight: 600;
 }
