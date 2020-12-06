@@ -13,15 +13,15 @@ The goal of the ElecVis project is to promote more engagement with energy usage 
 
 ## Tools Used
 
-Currently we are using the D3 library <[https://d3js.org/]> along with javascript to generate graphs. The Bootstrap library <[https://getbootstrap.com/]> was used for the nav bar and general form styling.
+Currently we are using the D3 library [https://d3js.org/] along with javascript to generate graphs. The Bootstrap library [https://getbootstrap.com/] was used for the nav bar and general form styling.
 
-For front-end design we used Figma <[https://www.figma.com/]>, a free online editor to create mockups. For icons, free images were used from <[https://www.flaticon.com/]>, but we also considered using <[https://fontawesome.com/]> to insert icons directly into text.
+For front-end design we used Figma [https://www.figma.com/], a free online editor to create mockups. For icons, free images were used from [https://www.flaticon.com/], but we also considered using [https://fontawesome.com/] to insert icons directly into text.
 
 ## Initial Mockups
 
-![Line graph mockup][images/mockup/mockup1.jpg]
-![Radial mockup][images/mockup/mockup2.jpg]
-![Ridgeline mockup][images/mockup/mockup3.jpg]
+![Line graph mockup](images/mockup/mockup1.jpg)
+![Radial mockup](images/mockup/mockup2.jpg)
+![Ridgeline mockup](images/mockup/mockup3.jpg)
 
 ## Implemented Features
 
