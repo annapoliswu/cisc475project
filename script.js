@@ -347,7 +347,7 @@ $(document).ready(function () {
 					console.log(data[0].date >= startDate);
 					*/
 
-					//Find the baseline of the data for use in the graph.
+					//Find the baseload of the data for use in the graph.
 					let minData = d3.min(data, function (d) { return +d.value });
 
 					//Generate a bar graph.
@@ -435,7 +435,7 @@ $(document).ready(function () {
 				.y(function (d) { return y(d.value) })
 			).attr("class", "graphline"); 
 
-		// Add baseline line
+		// Add baseload line
 		svg.append("line")
 			.attr("x1", 0)
 			.attr("x2", x(data[data.length - 1].date) )
@@ -444,14 +444,14 @@ $(document).ready(function () {
 			.attr("stroke-width", 1.5)
 			.attr("stroke-dasharray",4)
 			.attr("stroke", "darkgreen")
-			.attr("class", "baseline");
+			.attr("class", "baseload");
 
 		svg.append("text")
 			.attr("y", y(min)-5)//magic number here
 			.attr("x", 5)
 			.attr('text-anchor', 'left')
-			.attr("class", "baselineText")//easy to style with CSS
-			.text("Baseline Energy Usage");
+			.attr("class", "baseloadText")//easy to style with CSS
+			.text("Baseload Energy Usage");
 	
 	}
 
