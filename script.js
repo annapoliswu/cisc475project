@@ -524,5 +524,19 @@ $(document).ready(function () {
 		}
 	}
 
+	//appends a <p> element with specified message and id to the tips bar
+	function addTip(text, tipid) {
+		let tip = $('<p>', {
+			class: 'tip',
+			id: tipid,
+			html: text
+		}).appendTo( $('#tips') );
+	}
+
+	addTip("Average daily usage: __ kwh", "avgMonthly");
+	addTip("Average monthly usage: __ kwh", "avgDaily");
+	addTip("Tip 1", "tip1");
+	addTip("Tip 2", "tip2");
+
 });
 

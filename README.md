@@ -51,7 +51,6 @@ The overall site navbar can be edited in navbar.html file. Our script ensures it
 
 The contacts page is currently just a form skeleton and theoretically could be hooked up to some kind of backend or request management system in the future.
 
-
 ## Initial Design Mockups
 
 ![Line graph mockup](images/mockup/mockup1.jpg)
