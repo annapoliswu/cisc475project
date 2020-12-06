@@ -1,4 +1,4 @@
-# ![Line graph mockup](images/green-energy.png) ElecVis
+# ![Line graph mockup](images/mockup/mockup1.jpg  =32x32) ElecVis
 
 Project by: Atyaf Alnafeesah, Bonnie Skiena, David Boulden, Jeremy Redrup, Vincent Beardsley, Zihan Wu
 
