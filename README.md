@@ -1,4 +1,6 @@
-# ElecVis
+# ![Line graph mockup](images/green-energy.png) ElecVis
+
+Project by: Atyaf Alnafeesah, Bonnie Skiena, David Boulden, Jeremy Redrup, Vincent Beardsley, Zihan Wu
 
 ## Overview
 
