@@ -36,9 +36,6 @@ $(document).ready(function () {
 	//Start up the navbar
 	$('#navbar').load('./navbar.html');
 
-	//Welcome message
-	addTip("Welcome to ElecViz! To start visualizing, submit a CSV file of your energy data.", "welcomeTip");
-
 	//Every time start date changes, update inputStartDate value and the displayed graph.
 	$('#start').on("change", function () {
 		var inputStart = this.value;
@@ -161,7 +158,20 @@ $(document).ready(function () {
 					let minmax = d3.extent(data, function (d) { return d.date; });
 					let min = minmax[0];
 					let max = minmax[1];
+					//function to format the date to automatically update the start and end dates with dates from file
+					function formatDate(date) {
+						var d = new Date(date),
+							month = '' + (d.getMonth() + 1),
+							day = '' + d.getDate(),
+							year = d.getFullYear();
 
+						if (month.length < 2) 
+							month = '0' + month;
+						if (day.length < 2) 
+							day = '0' + day;
+
+						return [year, month, day].join('-');
+					}
 					//Initialize the startDate and endDate variables.
 					let startDate;
 					let endDate;
@@ -172,14 +182,19 @@ $(document).ready(function () {
 					} else {
 						startDate = inputStartDate;
 					}
-
+					//update start date field with file start date
+					htmlStartDate = formatDate (startDate);
+					var dateControl = document.querySelector('input[id="start"]');
+					dateControl.value = htmlStartDate;
 					//Choose the earlier of 1) the inputed end date or 2) the latest date in the data.
 					if (inputEndDate == null || inputEndDate < inputStartDate || inputEndDate < min || inputEndDate > max) {
 						endDate = max;
 					} else {
 						endDate = inputEndDate;
 					}
-
+					htmlEndDate = formatDate (endDate);
+					var dateControl = document.querySelector('input[id="end"]');
+					dateControl.value = htmlEndDate;
 					//If the data size is 15 min, pare down the data to the correct range.
 					if ($('#pickInfoSize').text() == "Fifteen Minutes") {
 						newData = [] //The new dataset
@@ -352,7 +367,6 @@ $(document).ready(function () {
 
 					//Find the baseload of the data for use in the graph.
 					let minData = d3.min(data, function (d) { return +d.value });
-					addTip("Baseload is the minimum amount of energy delivered. <br>Your baseload for this selected time range: " + Math.round(minData * 100)/100 + " kWh.", "baseloadTip");
 
 					//Generate a bar graph.
 					if ($('#pickGraphStyle').text() == "Bar Graph") {
@@ -528,9 +542,8 @@ $(document).ready(function () {
 		}
 	}
 
-	//appends a <p> element with specified message and id to the tips bar. if same id as another element, replaces that element
+	//appends a <p> element with specified message and id to the tips bar
 	function addTip(text, tipid) {
-		$('#' + tipid).remove();
 		let tip = $('<p>', {
 			class: 'tip',
 			id: tipid,
@@ -538,6 +551,10 @@ $(document).ready(function () {
 		}).appendTo( $('#tips') );
 	}
 
+	addTip("Average daily usage: __ kwh", "avgMonthly");
+	addTip("Average monthly usage: __ kwh", "avgDaily");
+	addTip("Tip 1", "tip1");
+	addTip("Tip 2", "tip2");
 
 });
 
