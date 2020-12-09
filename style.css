@@ -150,13 +150,9 @@ body{
 }
 
 .bar {
-	fill: green;
+	fill: orange;
 	stroke: black;
 	stroke-width: 3;
-}
-
-.bar:hover {
-	fill: red
 }
 
 /************************ Other *************************/
