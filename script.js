@@ -36,6 +36,9 @@ $(document).ready(function () {
 	//Start up the navbar
 	$('#navbar').load('./navbar.html');
 
+	//Welcome message
+	addTip("Welcome to ElecViz! To start visualizing, submit a CSV file of your energy data.", "welcomeTip");
+	
 	//Every time start date changes, update inputStartDate value and the displayed graph.
 	$('#start').on("change", function () {
 		var inputStart = this.value;
@@ -367,6 +370,7 @@ $(document).ready(function () {
 
 					//Find the baseload of the data for use in the graph.
 					let minData = d3.min(data, function (d) { return +d.value });
+					addTip("Baseload is the minimum amount of energy delivered. <br>Your baseload for this selected time range: " + Math.round(minData * 100)/100 + " kWh.", "baseloadTip");
 
 					//Generate a bar graph.
 					if ($('#pickGraphStyle').text() == "Bar Graph") {
@@ -542,19 +546,15 @@ $(document).ready(function () {
 		}
 	}
 
-	//appends a <p> element with specified message and id to the tips bar
+	//appends a <p> element with specified message and id to the tips bar. if same id as another element, replaces that element
 	function addTip(text, tipid) {
+		$('#' + tipid).remove();
 		let tip = $('<p>', {
 			class: 'tip',
 			id: tipid,
 			html: text
 		}).appendTo( $('#tips') );
 	}
-
-	addTip("Average daily usage: __ kwh", "avgMonthly");
-	addTip("Average monthly usage: __ kwh", "avgDaily");
-	addTip("Tip 1", "tip1");
-	addTip("Tip 2", "tip2");
 
 });
 
