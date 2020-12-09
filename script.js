@@ -352,7 +352,7 @@ $(document).ready(function () {
 
 					//Find the baseload of the data for use in the graph.
 					let minData = d3.min(data, function (d) { return +d.value });
-					addTip("Baseload is the minimum amount of energy delivered. <br>Your baseload for this selected time range: " + minData + " kWh.", "baseloadTip");
+					addTip("Baseload is the minimum amount of energy delivered. <br>Your baseload for this selected time range: " + Math.round(minData * 100)/100 + " kWh.", "baseloadTip");
 
 					//Generate a bar graph.
 					if ($('#pickGraphStyle').text() == "Bar Graph") {
