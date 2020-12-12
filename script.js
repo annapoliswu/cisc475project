@@ -1,3 +1,19 @@
+//Initialize hardcoded averages from UMass Dataset
+var fifteenMinuteAve = 8.56337475270227
+var hourAve = 34.2500476070234
+var twelveHourAve = 410.74591662059
+var dayAve = 820.1013523886276
+var monthAve = 24372.043358063114
+var yearAve = 292464.502967567
+var comparisonAve = 0;
+
+var fifteenMinuteMin = 0.006684516407407407;
+var hourMin = 0.05255550403703703;
+var twelveHourMin = 3.4257760907314814;
+var dayMin = 9.691182263518519;
+var monthMin = 960.0608583119911;
+var yearMin = 44998.51727650482;
+var comparisonMin = 0;
 
 //Initialize a few global variables
 var inputStartDate;
@@ -209,6 +225,8 @@ $(document).ready(function () {
 						}
 						//Set data to be the new dataset.
 						data = newData;
+						comparisonAve = fifteenMinuteAve;
+						comparisonMin = fifteenMinuteMin;
 					}
 					//If the desired data size is 1 h, condense the data and pare it down to the correct range.
 					else if ($('#pickInfoSize').text() == "One Hour") {
@@ -230,6 +248,8 @@ $(document).ready(function () {
 								}
 							}
 						}
+						comparisonAve = hourAve;
+						comparisonMin = hourMin;
 						//Set data to be the new dataset.
 						data = newData;
 					}
@@ -268,6 +288,8 @@ $(document).ready(function () {
 						}
 						//Set data to be the new dataset.
 						data = newData;
+						comparisonAve = twelveHourAve;
+						comparisonMin = twelveHourMin;
 					}
 					//If the desired data size is 1 d, condense the data and pare it down to the correct range.					
 					else if ($('#pickInfoSize').text() == "One Day") {
@@ -294,6 +316,8 @@ $(document).ready(function () {
 						}
 						//Set data to be the new dataset.
 						data = newData;
+						comparisonAve = dayAve;
+						comparisonMin = dayMin;
 					}
 					//If the desired data size is 1 mo, condense the data and pare it down to the correct range.					
 					else if ($('#pickInfoSize').text() == "One Month") {
@@ -332,6 +356,8 @@ $(document).ready(function () {
 						}
 						//Set data to be the new dataset.
 						data = newData;
+						comparisonAve = monthAve;
+						comparisonMin = monthMin;
 					}
 					//If the desired data size is 1 y, condense the data and pare it down to the correct range.					
 					else {
@@ -362,6 +388,8 @@ $(document).ready(function () {
 						}
 						//Set data to be the new dataset.
 						data = newData;
+						comparisonAve = yearAve;
+						comparisonMin = yearMin;
 					}
 					/* Testing code
 					console.log(data[0].date, startDate);
@@ -370,19 +398,34 @@ $(document).ready(function () {
 
 					//Find the baseload of the data for use in the graph.
 					let minData = d3.min(data, function (d) { return +d.value });
-					addTip("Baseload is the minimum amount of energy delivered. <br>Your baseload for this selected time range: " + Math.round(minData * 100)/100 + " kWh.", "baseloadTip");
+					let aveData = d3.mean(data, function (d) { return +d.value});
+					infoSize = $("#pickInfoSize").text();
+					aveRelation = "less than";
+					aveFeedback = "Great job!"
+					if (aveData > comparisonAve) {
+						aveRelation = "more than"
+						aveFeedback = "You should try to reduce your energy usage."
+					}
 
+					minRelation = "less than";
+					minFeedback = "Great job!"
+					if (minData > comparisonMin) {
+						minRelation = "more than"
+						aveFeedback = "You should try to reduce your baseload."
+					}
+					addTip("Baseload is the minimum amount of energy delivered. <br>Your " + infoSize.toLowerCase() + " baseload usage for this selected time range is " + Math.round(minData * 100)/100 + " kWh. This is " + minRelation + " the UMass " + infoSize.toLowerCase() + " baseload of " + Math.round(comparisonMin * 100)/100 + " kWh. " + aveFeedback + " If you want to reduce your energy usage, if you have unused electronics, try turning them off.", "baseloadTip");
+					addTip("Your " + infoSize.toLowerCase() + " average usage for this selected time range is " + Math.round(aveData * 100)/100 + "kWh. This is " + aveRelation + " the UMass " + infoSize.toLowerCase() + " average of "+  Math.round(comparisonAve * 100)/100 + " kWh. " + minFeedback + " If you want to reduce your energy baseload, you could try turning down the set temperatures on hot water heaters or your HVAC.", "averageTip");
 					//Generate a bar graph.
 					if ($('#pickGraphStyle').text() == "Bar Graph") {
-						makeBarGraph(data, minData);
+						makeBarGraph(data, minData, aveData);
 					} 
 					//Generate a radial plot.
 					else if ($('#pickGraphStyle').text() == "Radial Plot") {
-						makeRadialPlot(data, minData)
+						makeRadialPlot(data, minData, aveData)
 					} 
 					//Generate a line graph.
 					else {
-						makeLineGraph(data, minData);
+						makeLineGraph(data, minData, aveData);
 					}
 
 					//add labels that apply no matter what kind of graph
@@ -423,7 +466,7 @@ $(document).ready(function () {
 
 	}
 
-	function makeLineGraph(data, min) {
+	function makeLineGraph(data, min, ave) {
 
 		// Set up the x axis (date).
 		var x = d3.scaleTime()
@@ -477,7 +520,7 @@ $(document).ready(function () {
 	
 	}
 
-	function makeBarGraph(data, min) {
+	function makeBarGraph(data, min, ave) {
 
 		// Set up the x axis (date).
 		var x = d3.scaleTime()
@@ -529,7 +572,7 @@ $(document).ready(function () {
 
 	}
 
-	function makeRadialPlot(data, min) {
+	function makeRadialPlot(data, min, ave) {
 		// If there's too much data, radial plot lines become too small to display
 		if (data.length > 400) {
 			svg.append("text")
