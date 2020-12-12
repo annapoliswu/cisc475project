@@ -41,11 +41,11 @@ Right now, the website can only accept data in the format of the CSV files in th
 
 ### Tips
 
-Tips to save energy are displayed to the left of the graph. These are a work in progress. The script contains an addTip function that can display any text as a styled tip. Tips should be automatically generated upon energy data submission and would give suggestions on how to save energy. 
+Tips to save energy are displayed to the left of the graph. The script contains an addTip function that can display any text as a styled tip. Tips should be automatically generated upon energy data submission and would give suggestions on how to save energy. 
 
 Something akin to: *"Your energy average energy usage was __% above average for this period of time, try utilizing natural light and turning off appliances when not in use."*
 
-We are also looking into the idea of having a dataset representing neighborhood energy usage, and using this dataset to generate tips comparing neighborhood averages to individual household energy usage.
+We used the UMass Smart* dataset for a set of background data, and used this dataset to generate tips comparing input usage to the average usage of the Smart* dataset.
 
 ### Navigation
 
