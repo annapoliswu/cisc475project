@@ -414,7 +414,7 @@ $(document).ready(function () {
 						aveFeedback = "You should try to reduce your baseload."
 					}
 					addTip("Baseload is the minimum amount of energy delivered. <br>Your " + infoSize.toLowerCase() + " baseload usage for this selected time range is " + Math.round(minData * 100)/100 + " kWh. This is " + minRelation + " the UMass " + infoSize.toLowerCase() + " baseload of " + Math.round(comparisonMin * 100)/100 + " kWh. " + aveFeedback + " If you want to reduce your energy usage, if you have unused electronics, try turning them off.", "baseloadTip");
-					addTip("Your " + infoSize.toLowerCase() + " average usage for this selected time range is " + Math.round(aveData * 100)/100 + "kWh. This is " + aveRelation + " the UMass " + infoSize.toLowerCase() + " average of "+  Math.round(comparisonAve * 100)/100 + " kWh. " + minFeedback + " If you want to reduce your energy baseload, you could try turning down the set temperatures on hot water heaters or your HVAC.", "averageTip");
+					addTip("Your " + infoSize.toLowerCase() + " average usage for this selected time range is " + Math.round(aveData * 100)/100 + " kWh. This is " + aveRelation + " the UMass " + infoSize.toLowerCase() + " average of "+  Math.round(comparisonAve * 100)/100 + " kWh. " + minFeedback + " If you want to reduce your energy baseload, you could try turning down the set temperatures on hot water heaters or your HVAC.", "averageTip");
 					//Generate a bar graph.
 					if ($('#pickGraphStyle').text() == "Bar Graph") {
 						makeBarGraph(data, minData, aveData);
