@@ -1,0 +1,189 @@
+
+
+/*************** GENERAL UI******************/
+body{
+	margin: 0;
+	background-color: rgba(0,255,0,.1) !important; /* !important: override */
+	overflow: scroll;
+	font-size: 1em;
+	text-align: center;
+}
+
+#pageContent{
+	padding: 4% 10%;
+}
+
+#spinner{
+	position: relative; /*Didn't remove from normal document flow */
+	margin-top: 25%;
+	text-align: center;
+	display: none;
+}
+.text {
+	fill:white;
+	font-family: arial;
+}
+
+.text-center{
+	text-align: center;
+}
+
+.green {
+	background-color: green;
+}
+
+#submitSection{
+	float:left;
+}
+#optionsSection{
+	float: right;
+	margin-bottom: 10px;
+}
+
+#pickgraphStyle, .dropdown-menu li{
+	font-size: 1em;
+	margin-left: 10px;
+}
+
+#pickgraphStyle{
+	padding: 5px 10px;
+	margin: 8px;
+}
+
+/*when screen below 900px, date input displays differently*/
+@media only screen and (max-width: 900px) {
+	#submitSection, #optionsSection, #endDateInput, #startDateInput{
+		display: block;
+		float: none;
+	}
+
+	#controlPanel{
+		text-align:center;
+	}
+}
+
+
+#mainPanel {
+	margin: 0;
+	height: 32vw;
+	width: 80vw;
+}
+
+#tips {
+	background-color: white;
+	text-align: center;
+	width: 20%;
+	border-color: gray;
+	border-width: .1vh;
+	border-style: solid;
+	padding: 2%;
+}
+
+.tip{
+	
+	background-color: rgba(0, 255, 0,.5);
+	font-size: .8em;
+	text-align: center;
+	border-radius: 5%;
+	padding: 3%;
+	margin-top: 3%;
+}
+
+.tipIcon {
+	max-width: 30%;
+    height: auto;
+}
+
+#graph {
+	width: 75%;
+	vertical-align: bottom;
+	background-color: white;
+	overflow: auto;
+	border-color: grey;
+  	border-width: .1vh;
+  	border-style: solid;
+}
+
+.svg-container {
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	/* padding-bottom: 100%; aspect ratio */
+	vertical-align: top;
+	overflow: hidden;
+  }
+  .svg-content-responsive {
+	display: inline-block;
+	position: absolute;
+	top: 10px;
+	left: 0;
+  }
+  
+  svg .rect {
+	fill: gold;
+	stroke: steelblue;
+	stroke-width: 5px;
+  }
+
+  
+.graphText, .baseloadText{
+	font-family: arial;
+	font-size: .8em;
+}
+
+.graphText{
+	fill:black;
+}
+
+.baseloadText, .baseload{
+	fill: darkgreen;
+	font-weight: 600;
+}
+
+
+
+
+/**************** D3 GRAPHS ******************/
+
+.graph-component {
+	background-color: gray;
+}
+
+.bar {
+	fill: orange;
+	stroke: black;
+	stroke-width: 3;
+}
+
+/************************ Other *************************/
+p{
+	font-size: 16pt;
+	color:darkgreen;
+}
+h1{
+	margin-top: 40px;
+}
+
+#aboutimgs{
+	margin: 50px 150px;
+	text-align: justify;
+}
+
+#aboutimgs:after{
+	content:""; display: inline-block; width: 100%; height: 0;
+}
+
+.aboutimg{
+	display: inline-block;
+}
+
+.aboutimg>img{
+	height: 100px;
+	width: 100px;
+}
+
+figcaption{
+	text-align: center;
+	margin-top: 10px;
+	font-weight: 500;
+}

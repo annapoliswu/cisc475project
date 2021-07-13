@@ -1,0 +1,90 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="../static/styles/style_history.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id='navbar'>
+  </div>
+
+    <div id="pageContent">
+
+      <div id="controlPanel">
+
+        <div id="optionsSection">
+
+          <span id="startDateInput">
+            <label for="start">Start date:</label>
+            <input type="date" id="start" name="startDate">
+          </span>
+          <span id="endDateInput">
+            <label for="end">End date:</label>
+            <input type="date" id="end" name="endDate">
+          </span>
+          <button type="button" id="Submit">Submit</button>
+          <span class="dropdown" >
+            <button class="btn btn-success dropdown-toggle" id="pickGraphStyle" data-toggle="dropdown">
+              Line Graph
+            </button>
+            <ul class="dropdown-menu">
+              <li><a id="lineGraph" href="#">Line Graph</a></li>
+              <li><a id="barGraph" href="#">Bar Graph</a></li>
+	      <li><a id="radialPlot" href="#">Radial Plot</a></li>
+            </ul>
+          </span>
+          <span class="dropdown" >
+            <button class="btn btn-success dropdown-toggle" id="pickGraphStyle" data-toggle="dropdown">
+              History
+            </button>
+            <ul class="dropdown-menu">
+              <li><a id="history" href="#">History</a></li>
+              <li><a id="liveData" href="/">Live Data</a></li>
+            </ul>
+          </span>
+          <!-- <span class="dropdown">
+            <button class="btn btn-success dropdown-toggle" id="pickInfoSize" data-toggle="dropdown">Fifteen Minutes</button>
+            <ul class="dropdown-menu">
+              <li><a id="fifteenMinutes" href="#">Fifteen Minutes</a></li>
+              <li><a id="hour" href="#">One Hour</a></li>
+              <li><a id="twelveHours" href="#">Twelve Hours</a></li>
+              <li><a id="day" href="#">One Day</a></li>
+              <li><a id="month" href="#">One Month</a></li>
+              <li><a id="year" href="#">One Year</a></li>
+            </ul>
+          </span> -->
+        </div>
+      </div><!--end controlPanel-->
+
+      <div id="mainPanel" class = "row">
+        <div class="overflow-auto col-4" id="tips">
+          <img id="tipIcon1" src="../static/images/cuteEarth.png" class='tipIcon'>
+
+        </div>
+
+        <div id="graph" class = "col-8">
+
+          <div id='spinner'>
+            <div class="spinner-border text-success" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div> <!--end mainPanel-->
+
+    </div> <!--end pageContent-->
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3-scale-radial.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/script_history.js') }}" async></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+  crossorigin="anonymous"></script>
+
+</html>
