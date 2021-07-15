@@ -41,14 +41,20 @@ $(document).ready(function () {
 	// Receive message from server.
 	var socket = io()
 
+	
+
+	fetch('/today')
+	.then(response => response.json()) //response.json() return a promise
+	.then(json => makeGraph(json)) // "arrow function"
+
+
 	socket.on('message', function (msg) {
-		if(line){
-			makeLineGraph(msg)
-		}
-		if(bar){
-			makeBarGraph(msg)
-		}
+		makeGraph(msg)
 	});
+
+
+
+
 	// Change graph:
 	$('#lineGraph').click(function(e){
 		$('pickGraphStyle').text('Line Graph');
@@ -82,7 +88,14 @@ $(document).ready(function () {
 	//Welcome message
 	addTip("Welcome to ElecViz!", "welcomeTip");
 
-
+	function makeGraph(data){
+		if(line){
+			makeLineGraph(data)
+		}
+		if(bar){
+			makeBarGraph(data)
+		}
+	}
 
 	function createSVG() {
 		//Create an svg element that can be used to hold any graph type.

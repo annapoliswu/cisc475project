@@ -49,6 +49,7 @@ $(document).ready(function () {
 	startDateField.value = yesterday
 	endDateField.value = yesterday
 
+
 	//Set the default date value:
 	inputStartDate = yesterday
 	inputEndDate = yesterday

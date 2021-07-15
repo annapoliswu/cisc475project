@@ -24,17 +24,22 @@ previous = 0
 oneMinuteData = []
 
 
+
 # Used in live data page: send data to the client every one minute(currently 2 seconds), in the meantime save it to database.
 def send_data():
     previous = round((time.time()*1000)) # When we start the server, set the previous time.
     while True:
+        print("hello!")
         # Generate random data every 2 seconds:
         time.sleep(2)
         value, timeStamp = generateRandomData()
         write_into_database(timeStamp, value)
 
         now = round((time.time()*1000)) # Every time we received the data, record current time and compare it with the previous time
-        if(now - previous > 60000):# If the span is one minute
+        if(now - previous > 3000):# If the span is one minute
+            avg = 0
+            if(len(oneMinuteData) > 0):
+                avg = float(sum(oneMinuteData) / len(oneMinuteData))
             avg = sum(oneMinuteData) / len(oneMinuteData)
             tempDic = {'date': previous, 'value': avg}
             today.append(tempDic)
@@ -76,9 +81,13 @@ def index_liveData():
     if thread is None:
         thread = Thread(target=send_data)
         thread.daemon = True
+        print("actived!")
         thread.start()
     return render_template("index_liveData.html")
 
+@socketio.on("change to live data page")
+def render_liveDataPage():
+    return render_template("index_liveData.html")
 
 @socketio.on("Time span")
 def send_history_data(message):
@@ -103,17 +112,16 @@ def send_history_data(message):
             e = int(datetime_end.timestamp()*1000 + 86399059)
         else:
             e = message['end']
-        
-    
-            
-
-        print("s: ", s)
-        print("e: ", e)
         historyData = format_data_for_history_page(s, e)
         neededInfo = {"valid": "yes", "history data": historyData}
         socketio.emit("date feedback", neededInfo)
-        
 
+
+
+@app.route('/today', methods = ['GET'])
+def send_todayData():
+    return jsonify(today)
+    
 
 def dateIsValid(start_date, end_date):
     # Get the valid time span: firstDay ~ yesterday
@@ -176,7 +184,9 @@ def format_data_for_history_page(start, end):
         currentTime = int(row[0])
         currentValue = float(row[1])
         if(currentTime - previousTime > 60000):
-            avg = mean(tempOneMinuteData)
+            avg = 0
+            if(len(tempOneMinuteData) > 0):
+                avg = float(sum(tempOneMinuteData) / len(tempOneMinuteData))
             tempDic = {'date': previousTime, 'value': avg}
             history.append(tempDic)
             previousTime = currentTime
@@ -187,15 +197,6 @@ def format_data_for_history_page(start, end):
     return history
 
 
-
-
-
-
-
-
-
-
-    
 @app.route('/changeGraph', methods = ['GET'])
 def changeGraph():
     return jsonify(today)
