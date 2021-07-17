@@ -29,7 +29,6 @@ oneMinuteData = []
 def send_data():
     previous = round((time.time()*1000)) # When we start the server, set the previous time.
     while True:
-        print("hello!")
         # Generate random data every 2 seconds:
         time.sleep(2)
         value, timeStamp = generateRandomData()

@@ -147,6 +147,25 @@ $(document).ready(function () {
 		svg.append("g")
 			.call(d3.axisLeft(y));
 
+		// Set up labels:
+		svg.append("text")
+			.attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
+			.style("text-anchor", "middle")
+			.text("Time")
+			.classed('graphText', true);
+
+
+		svg.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 0 - margin.left + 15) // y coordinate
+			.attr("x", 0 - (height / 2)) // x coordinate
+			.attr("dy", "3em")
+			.style("text-anchor", "middle") // text-anchor: align the text
+			.text("Energy Usage (kW/h)")
+			.classed('graphText', true);// Match the CSS
+		
+		
+
 		// Add the line and line styles
 		svg.append("path")
 			.datum(data)
@@ -177,6 +196,23 @@ $(document).ready(function () {
 			.range([height, 0]);
 		svg.append("g")
 			.call(d3.axisLeft(y));
+	
+		// Set up labels:
+		svg.append("text")
+			.attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
+			.style("text-anchor", "middle")
+			.text("Time")
+			.classed('graphText', true);
+	
+	
+		svg.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 0 - margin.left + 15) // y coordinate
+			.attr("x", 0 - (height / 2)) // x coordinate
+			.attr("dy", "3em")
+			.style("text-anchor", "middle") // text-anchor: align the text
+			.text("Energy Usage (kW/h)")
+			.classed('graphText', true);// Match the CSS
 
 		// Add the bar and bar styles.
 		svg.selectAll(".bar")
