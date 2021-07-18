@@ -128,13 +128,23 @@ $(document).ready(function () {
 	function makeLineGraph(data) {
 		cleanSVG();
 
+		var minutes = []
+		// 24*60 = 1440
+		for(var i = 0; i <= 1440; i++){
+			minutes.push(i)
+		}
+
 		// Set up the x axis (date).
-		var x = d3.scaleTime()
-			.domain([data[0].date, data[data.length - 1].date])  	//domain takes in [min, max] and specifies the range the graph shows
+		var x = d3.scaleLinear()
+			.domain(minutes)   	//domain takes in [min, max] and specifies the range the graph shows
 			.range([0, width]);
 
+
+		var hours = []
+		for(var i = 0; i <= 24; i++){
+			hours.push(i)
+		}
 		var xAxis = d3.axisBottom(x)
-			.tickFormat(d3.timeFormat("%H:%M"))
 
 		svg.append("g")
 			.attr("transform", "translate(0," + height + ")")

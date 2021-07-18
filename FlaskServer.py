@@ -40,7 +40,10 @@ def send_data():
             if(len(oneMinuteData) > 0):
                 avg = float(sum(oneMinuteData) / len(oneMinuteData))
             avg = sum(oneMinuteData) / len(oneMinuteData)
-            tempDic = {'date': previous, 'value': avg}
+            current_datetime = datetime.fromtimestamp(1626487033217/1000.0)
+            minute = current_datetime.hour * 60 + current_datetime.minute
+
+            tempDic = {'date': minute, 'value': avg}
             today.append(tempDic)
             socketio.emit('message',today)
             previous = now
@@ -116,7 +119,20 @@ def send_history_data(message):
         socketio.emit("date feedback", neededInfo)
 
 
+def fill_in_zero():
+    con = sqlite3.connect('data.db')
+    data = con.execute("SELECT * FROM data ORDER BY time DESC LIMIT 1")
+    last = 0
+    for row in data:
+        last = row[0] + 2000
+    now = round((time.time()*1000))
 
+    while(last < now):
+        write_into_database(last, 0)
+        last = last + 2000
+
+    con.close()
+    
 @app.route('/today', methods = ['GET'])
 def send_todayData():
     return jsonify(today)
@@ -182,7 +198,8 @@ def format_data_for_history_page(start, end):
     for row in data:
         currentTime = int(row[0])
         currentValue = float(row[1])
-        if(currentTime - previousTime > 60000):
+        # 86400000 milliseconds are a day
+        if(currentTime - previousTime > 86400000):
             avg = 0
             if(len(tempOneMinuteData) > 0):
                 avg = float(sum(tempOneMinuteData) / len(tempOneMinuteData))
@@ -218,7 +235,5 @@ def init_db():
 
 if __name__ == '__main__':
     init_db()
-    # temp = format_data_for_history_page(1625926266330, 1625929351180)
-    # print(temp)
     socketio.run(app, debug = True)
 

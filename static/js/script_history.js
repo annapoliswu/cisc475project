@@ -146,7 +146,7 @@ $(document).ready(function () {
 			.attr("transform", "rotate(-90)")
 			.attr("y", 0 - margin.left + 15) // y coordinate
 			.attr("x", 0 - (height / 2)) // x coordinate
-			.attr("dy", "3em")
+			.attr("dy", "0.5em")
 			.style("text-anchor", "middle") // text-anchor: align the text
 			.text("Energy Usage (kW/h)")
 			.classed('graphText', true);// Match the CSS
@@ -200,7 +200,7 @@ $(document).ready(function () {
 			.attr("transform", "rotate(-90)")
 			.attr("y", 0 - margin.left + 15) // y coordinate
 			.attr("x", 0 - (height / 2)) // x coordinate
-			.attr("dy", "3em")
+			.attr("dy", "0.1em")
 			.style("text-anchor", "middle") // text-anchor: align the text
 			.text("Energy Usage (kW/h)")
 			.classed('graphText', true);// Match the CSS
