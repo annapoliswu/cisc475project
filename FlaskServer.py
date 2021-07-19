@@ -40,10 +40,11 @@ def send_data():
             if(len(oneMinuteData) > 0):
                 avg = float(sum(oneMinuteData) / len(oneMinuteData))
             avg = sum(oneMinuteData) / len(oneMinuteData)
-            current_datetime = datetime.fromtimestamp(1626487033217/1000.0)
+
+            current_datetime = datetime.fromtimestamp(round((time.time())))
             minute = current_datetime.hour * 60 + current_datetime.minute
 
-            tempDic = {'date': minute, 'value': avg}
+            tempDic = {'date': timeStamp, 'value': avg}
             today.append(tempDic)
             socketio.emit('message',today)
             previous = now
@@ -234,6 +235,10 @@ def init_db():
 
 
 if __name__ == '__main__':
+    fill_in_zero()
+    current_datetime = datetime.fromtimestamp(round((time.time())))
+    minute = current_datetime.hour * 60 + current_datetime.minute
+    print(minute)
     init_db()
     socketio.run(app, debug = True)
 

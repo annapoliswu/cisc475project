@@ -100,7 +100,7 @@ $(document).ready(function () {
 
 	function setGraphDimension(){
 		//Specify graph dimensions
-		margin = { top: 30, right: 10, bottom: 10, left: 70 };
+		margin = { top: 30, right: 10, bottom: 30, left: 70 };
 		viewWidth = $('#graph').width();
 		viewHeight = $('#graph').height() - 30;
 		width = viewWidth - margin.left - margin.right; //was 600

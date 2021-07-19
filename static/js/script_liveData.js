@@ -136,15 +136,15 @@ $(document).ready(function () {
 
 		// Set up the x axis (date).
 		var x = d3.scaleLinear()
-			.domain(minutes)   	//domain takes in [min, max] and specifies the range the graph shows
+			.domain([0, 23])   	//domain takes in [min, max] and specifies the range the graph shows
 			.range([0, width]);
 
-
 		var hours = []
-		for(var i = 0; i <= 24; i++){
+		for(var i = 0; i <= 23; i++){
 			hours.push(i)
 		}
-		var xAxis = d3.axisBottom(x)
+		console.log(hours)
+		var xAxis = d3.axisBottom(x).tickValues(hours)
 
 		svg.append("g")
 			.attr("transform", "translate(0," + height + ")")
@@ -213,7 +213,6 @@ $(document).ready(function () {
 			.style("text-anchor", "middle")
 			.text("Time")
 			.classed('graphText', true);
-	
 	
 		svg.append("text")
 			.attr("transform", "rotate(-90)")
